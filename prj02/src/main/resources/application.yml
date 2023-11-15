@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    username: root
+    password: qwe456
+    url: jdbc:mysql://localhost:3306/shop?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&useInnoDB=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+jpa:
+  show-sql: true
+  hibernate:
+    ddl-auto: update
+
+
+security:
+  jwt:
+    header: Authorization
+    secret: superCoding
+    token-validity-in-seconds: 604800
