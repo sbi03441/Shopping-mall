@@ -82,7 +82,9 @@ public class JwtTokenProvider {
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 
+        claims.get("role", String.class);
         // "userId" 클레임의 값을 얻기
         return claims.isEmpty() ? null : claims.get("sub", String.class);
+
     }
 }

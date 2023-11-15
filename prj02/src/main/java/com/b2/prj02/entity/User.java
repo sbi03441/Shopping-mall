@@ -45,6 +45,16 @@ public class User implements UserDetails {
         return this;
     }
 
+    private Integer stack;
+
+    public void addStack() {
+        this.stack++;
+    }
+
+    public void resetStack(){
+        this.stack = 0;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new CustomGrantedAuthority(this.status));
