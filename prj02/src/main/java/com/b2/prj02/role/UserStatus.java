@@ -4,5 +4,4 @@ import javax.persistence.Enumerated;
 
 public enum UserStatus {
     SELLER, USER, DELETED;
-
 }
