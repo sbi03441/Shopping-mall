@@ -51,4 +51,8 @@ public class ProductEntity {
     private String img3;
 
     private String option;
+
+    public Long getId() {
+        return this.productId;
+    }
 }

@@ -20,6 +20,6 @@ public class ProductCreateRequestDTO {
     private String img1;
     private String img2;
     private String img3;
-    private String option;
+    private String[] option;
     private Long userId;
 }

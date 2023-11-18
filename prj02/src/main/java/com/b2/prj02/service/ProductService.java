@@ -1,17 +1,21 @@
 package com.b2.prj02.service;
 
+import com.b2.prj02.dto.CategoryDTO;
 import com.b2.prj02.dto.ProductDTO;
+import com.b2.prj02.dto.SellerProductResponseDTO;
 import com.b2.prj02.entity.ProductEntity;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.mapper.ProductMapper;
 import com.b2.prj02.repository.ProductRepository;
 import com.b2.prj02.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +30,7 @@ public class ProductService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 판매자 권한 체크
-        if (!user.isSeller()) {
-            throw new AccessDeniedException("판매자 권한이 없습니다.");
-        }
 
-        // 물품 정보 유효성 검사.
-       /* if (productDTO.getPrice() <= 0) {
-            throw new IllegalArgumentException("가격은 0보다 커야 합니다.");
-        }*/
 
         // ProductDTO를 ProductEntity로 변환
         ProductEntity productEntity = ProductMapper.INSTANCE.toEntity(productDTO);
@@ -52,7 +48,45 @@ public class ProductService {
         ProductMapper.INSTANCE.toDTO(savedProduct);
     }
 
-    private String getUserEmailFromSecurityContext() {
+    // 판매 물품 조회
+    public List<SellerProductResponseDTO> getActiveProducts() {
+        // 현재 날짜를 가져오는 로직을 추가.
+        LocalDateTime currentDate = LocalDateTime.now();
+
+        List<ProductEntity> activeProducts = productRepository.findBySaleEndDateAfter(currentDate);
+
+        /*// Entity를 DTO로 변환
+        return ProductMapper.INSTANCE.toDTOList(activeProducts);*/
+
+        return activeProducts.stream()
+                .map(product -> new SellerProductResponseDTO(
+                        product.getId(),
+                        product.getImg1(), // 이미지 경로 등의 정보가 있는 것으로 가정
+                        product.getCategory() != null ? new CategoryDTO(product.getCategory().getCategoryId(), product.getCategory().getCategoryName()) : null,
+                        product.getProductName(),
+                        product.getPrice(),
+                        product.getProductQuantity(),
+                        product.getOption() != null ? product.getOption().split(",") : new String[0],
+                        0))
+                .collect(Collectors.toList());
+    }
+
+    public void updateProductQuantity(SellerProductResponseDTO sellerProductResponseDTO) {
+        ProductEntity productEntity = productRepository.findById(sellerProductResponseDTO.getProductId())
+                .orElseThrow(() -> new IllegalArgumentException("물품을 찾을 수 없습니다."));
+
+        // 재고 수정 로직 추가
+        int updatedQuantity = sellerProductResponseDTO.getUpdatedProductQuantity();
+        if (updatedQuantity < 0) {
+            throw new IllegalArgumentException("재고는 음수가 될 수 없습니다.");
+        }
+
+        productEntity.setProductQuantity(updatedQuantity);
+        productRepository.save(productEntity);
+    }
+
+
+        private String getUserEmailFromSecurityContext() {
         // SecurityContext에서 사용자 이메일을 가져오는 로직을 구현
         SecurityContextHolder.getContext().getAuthentication().getName();
         return "user@example.com";

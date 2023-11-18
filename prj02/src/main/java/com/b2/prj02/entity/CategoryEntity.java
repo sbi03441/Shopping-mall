@@ -24,4 +24,8 @@ public class CategoryEntity {
 
     @OneToMany(mappedBy = "category")
     private List<ProductEntity> productList;
+
+    public Long getCategoryId() {
+        return this.category;
+    }
 }

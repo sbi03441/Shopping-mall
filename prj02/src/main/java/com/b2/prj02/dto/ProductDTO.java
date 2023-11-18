@@ -32,14 +32,12 @@ public class ProductDTO {
     private String img1;
     private String img2;
     private String img3;
-    private String option; //option String으로 줘야하나?
+    private String option;
 
     @NotNull
     private CategoryEntity category;
 
     @NotNull
     private User userId;
-
-
 
 }

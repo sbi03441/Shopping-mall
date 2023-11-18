@@ -76,8 +76,4 @@ public class User implements UserDetails {
     }
 
 
-    public boolean isSeller() {
-        return status == UserStatus.SELLER;
-    }
-
 }
