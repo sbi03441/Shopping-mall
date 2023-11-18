@@ -1,7 +1,6 @@
 package com.b2.prj02.controller;
 
 import com.b2.prj02.dto.ProductDTO;import com.b2.prj02.dto.SellerProductResponseDTO;
-import com.b2.prj02.exception.NoActiveProductsException;
 import com.b2.prj02.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class SellerController {
 
     private final ProductService productService;
