@@ -42,6 +42,13 @@ dependencies {
 	// MapStruct
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+	// Swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+	// SpringDoc 적용
+	// implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
+
 }
 
 tasks.named('bootBuildImage') {
