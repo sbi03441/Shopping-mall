@@ -1,17 +1,16 @@
 package com.b2.prj02.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "product")
 public class ProductEntity {
 
@@ -40,6 +39,7 @@ public class ProductEntity {
     private LocalDateTime registerDate;
 
     @Temporal(TemporalType.DATE)
+    @NonNull
     @Column(name = "sale_enddate")
     private Date saleEndDate;
 

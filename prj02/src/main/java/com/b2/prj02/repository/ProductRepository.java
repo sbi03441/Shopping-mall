@@ -11,14 +11,11 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
-    // 예상 판매 종료 날짜가 아직 안된 판매에 대해서 조회
-    List<ProductEntity> findBySaleEndDateAfter(@NotNull  LocalDateTime currentDate);
-    //특정 기간에 등록된 제품을 검색
-    List<ProductEntity> findByRegisterDateBetween(LocalDateTime registerDate, LocalDateTime saleEndDate);
+    //특정 사용자의 판매 상품 조회
+    List<ProductEntity> findByUserIdAndSaleEndDateAfter(Long userId,LocalDateTime currentDate);
 
-    //특정 날짜에 등록된 제품을 검색
-    List<ProductEntity> findByRegisterDate(LocalDateTime date);
 
-    // 기간에 따른 제품 검색 및 정렬
-    List<ProductEntity> findByRegisterDateBetweenOrderByPriceAsc(LocalDateTime registerDate, LocalDateTime saleEndDate);
+    // 판매자 아이디와 판매 종료 날짜가 지난 상품 조회
+    List<ProductEntity> findByUserIdAndSaleEndDateBefore(Long userId, LocalDateTime currentDate);
+
 }
