@@ -3,22 +3,26 @@ package com.b2.prj02.controller;
 import com.b2.prj02.dto.UserDeleteRequestDTO;
 import com.b2.prj02.dto.UserLoginRequestDTO;
 import com.b2.prj02.dto.UserSignupRequestDTO;
+import com.b2.prj02.repository.UserRepository;
+import com.b2.prj02.service.LockedUser;
 import com.b2.prj02.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     private final UserService userService;
+
 //***** 회원가입 *****
 
 //1. 유저 정보를 DTO로 받아들임
 //2. 해당 유저 정보를 DB와 비교
 //3. 없는 유저일 시 password Encoding 후 DB에 Save
-
     @PostMapping("/signup")
     public ResponseEntity<?> userSignup(@RequestBody UserSignupRequestDTO user){
         return userService.signup(user);

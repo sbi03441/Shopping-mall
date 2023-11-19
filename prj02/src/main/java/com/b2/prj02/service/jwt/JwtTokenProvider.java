@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class JwtTokenProvider {
     //   1. yml에 적었던 문자열로 된 토큰을 @Value를 통해서 가져옴
@@ -82,7 +84,9 @@ public class JwtTokenProvider {
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 
+        claims.get("role", String.class);
         // "userId" 클레임의 값을 얻기
         return claims.isEmpty() ? null : claims.get("sub", String.class);
+
     }
 }
