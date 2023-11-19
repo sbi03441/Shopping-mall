@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class JwtTokenProvider {
     //   1. yml에 적었던 문자열로 된 토큰을 @Value를 통해서 가져옴
