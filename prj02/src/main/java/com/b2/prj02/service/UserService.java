@@ -4,6 +4,7 @@ import com.b2.prj02.dto.request.UserDeleteRequestDTO;
 import com.b2.prj02.dto.request.UserLoginRequestDTO;
 import com.b2.prj02.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.entity.User;
+import com.b2.prj02.repository.ProfileRepository;
 import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
@@ -24,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileRepository profileRepository;
     public ResponseEntity<?> signup(UserSignupRequestDTO user) {
         if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
             User newUser = User.builder()
@@ -55,6 +57,20 @@ public class UserService {
         }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일을 다시 확인해주세요.");
     }
 
+    // 수정
+//    public ResponseEntity<?> login(String email, String password) {
+//        User user = getUserByEmail(email);
+//        if(!passwordEncoder.matches(password, user.getPassword())){
+//            String newToken = jwtTokenProvider.createToken(user.getUserId(), user.getStatus());
+//
+//            if(newToken!=null) {
+//                HttpHeaders headers = new HttpHeaders();
+//                headers.setBearerAuth(newToken);
+//                return ResponseEntity.status(200).headers(headers).body("반갑습니다 " + user.getEmail() + "님");
+//            }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("비밀번호를 다시 확인해주세요.");
+//        }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일을 다시 확인해주세요.");
+//    }
+
     public ResponseEntity<?> logout(String token) {
         try {
             if(userRepository.findByEmail(jwtTokenProvider.findEmailBytoken(token)).isPresent()) {
@@ -80,4 +96,8 @@ public class UserService {
         }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일 또는 비밀번호가 틀렸습니다.");
 
     }
+
+//    private User getUserByEmail(String email){
+//        return profileRepository.findByEmail(email).orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
+//    }
 }

@@ -21,8 +21,8 @@ public class ProfileController {
     private final ProfileService profileService;
     @GetMapping("/info")
     public ResponseEntity<?> getUserProfile() {
-        Long profileIdx = AuthHolder.getProfileIdx();
-        ProfileInfoResponseDTO profileInfoResponse = profileService.findProfileInfoByProfileIdx(profileIdx);
+        String profileEmail = AuthHolder.getProfileEmail();
+        ProfileInfoResponseDTO profileInfoResponse = profileService.findProfileInfoByProfileEmail(profileEmail);
         return ResponseEntity.ok(profileInfoResponse);
     }
 }

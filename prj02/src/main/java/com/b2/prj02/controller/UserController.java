@@ -38,6 +38,12 @@ public class UserController {
         return userService.login(user);
     }
 
+    // 수정
+//    @PostMapping("/login")
+//    public ResponseEntity<?> userLogin(@RequestBody UserLoginRequestDTO user){
+//        return userService.login(user.getEmail(), user.getPassword());
+//    }
+
 //***** 로그아웃 *****
 
 //1. 로그아웃 시 유저의 Token을 blacklist에 추가

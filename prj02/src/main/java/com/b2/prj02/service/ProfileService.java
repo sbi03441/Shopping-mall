@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 public class ProfileService {
     private final ProfileRepository profileRepository;
 
-    public ProfileInfoResponseDTO findProfileInfoByProfileIdx(Long profileIdx) {
-        User user = profileRepository.findById(profileIdx).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
-        return ProfileInfoResponseDTO.from(user);
-    }
+//    public ProfileInfoResponseDTO findProfileInfoByProfileIdx(Long profileIdx) {
+//        User user = profileRepository.findByUserId(profileIdx).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
+//        return ProfileInfoResponseDTO.from(user);
+//    }
+    public ProfileInfoResponseDTO findProfileInfoByProfileEmail(String email) {
+    User user = profileRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
+    return ProfileInfoResponseDTO.from(user);
+}
 }
