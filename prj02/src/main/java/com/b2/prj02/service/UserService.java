@@ -32,7 +32,8 @@ public class UserService {
                     .address(user.getAddress())
                     .gender(user.getGender())
                     .phoneNumber(user.getPhoneNumber())
-                    .status(UserStatus.USER)
+                    .status(user.getStatus())
+//                   .status(UserStatus.USER)
                     .build();
 
             userRepository.save(newUser);

@@ -7,11 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +41,7 @@ public class User implements UserDetails {
     @Column(name = "pay_money")
     private Integer payMoney;
 
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     public User updateStatus(UserStatus newStatus) {
@@ -47,7 +51,16 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new CustomGrantedAuthority(this.status));
+//        return Collections.singletonList(new CustomGrantedAuthority(this.status));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new CustomGrantedAuthority(status));
+
+        // 판매자 여부에 따라 추가 권한 부여
+        if (isSeller()) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_SELLER"));
+        }
+
+        return authorities;
     }
 
     @Override
@@ -76,4 +89,7 @@ public class User implements UserDetails {
     }
 
 
+    public boolean isSeller() {
+        return status == UserStatus.SELLER;
+    }
 }

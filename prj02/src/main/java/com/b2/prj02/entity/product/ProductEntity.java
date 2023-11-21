@@ -1,10 +1,11 @@
-package com.b2.prj02.entity;
+package com.b2.prj02.entity.product;
 
+import com.b2.prj02.entity.CategoryEntity;
+import com.b2.prj02.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
@@ -19,17 +20,18 @@ public class ProductEntity {
     @Column(name = "product_idx")
     private Long productId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_idx")
     private CategoryEntity category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User userId;
 
     @Column(name = "product_name")
     private String productName;
 
+    @Column(name = "price")
     private double price;
 
     @Column(name = "product_quantity")
@@ -38,10 +40,8 @@ public class ProductEntity {
     @Column(name = "register_date")
     private LocalDateTime registerDate;
 
-    @Temporal(TemporalType.DATE)
-    @NonNull
     @Column(name = "sale_enddate")
-    private Date saleEndDate;
+    private LocalDateTime saleEndDate;
 
     @Column(name = "product_detail")
     private String productDetail;
@@ -52,7 +52,4 @@ public class ProductEntity {
 
     private String option;
 
-    public Long getId() {
-        return this.productId;
-    }
 }

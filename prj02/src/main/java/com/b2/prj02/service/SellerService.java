@@ -1,14 +1,12 @@
 package com.b2.prj02.service;
 
-import com.b2.prj02.dto.*;
 import com.b2.prj02.dto.sellerDTO.ProductCreateRequestDTO;
-import com.b2.prj02.dto.sellerDTO.SellerProductRequestDTO;
-import com.b2.prj02.dto.sellerDTO.SellerUpdateQuantityRequestDTO;
-import com.b2.prj02.entity.ProductEntity;
+import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.mapper.ProductMapper;
 import com.b2.prj02.repository.ProductRepository;
 import com.b2.prj02.repository.UserRepository;
+import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class SellerService {
     private final ProductRepository productRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;

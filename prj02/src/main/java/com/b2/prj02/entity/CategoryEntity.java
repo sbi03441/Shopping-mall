@@ -1,5 +1,6 @@
 package com.b2.prj02.entity;
 
+import com.b2.prj02.entity.product.ProductEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +26,4 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category")
     private List<ProductEntity> productList;
 
-    public Long getCategoryId() {
-        return this.category;
-    }
 }
