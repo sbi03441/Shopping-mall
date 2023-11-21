@@ -41,9 +41,14 @@ public class SellerService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new AccessDeniedException("사용자를 찾을 수 없습니다."));
 
+        // SELLER 권한 확인
+        if (user.getStatus() != UserStatus.SELLER) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("SELLER 권한이 없습니다.");
+        }
+
         try {
             // ProductMapper를 사용하여 DTO를 Entity로 변환
-            ProductEntity productEntity = ProductMapper.INSTANCE.toEntity(productCreateRequestDTO);
+            ProductEntity productEntity = ProductMapper.INSTANCE.toProductEntity(productCreateRequestDTO);
             // 추가로 user 설정
             productEntity.setUserId(user);
 

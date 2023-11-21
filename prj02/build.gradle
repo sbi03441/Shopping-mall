@@ -51,6 +51,7 @@ dependencies {
 	// SpringDoc 적용
 	// implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
 
+	// h2 테이터베이스
 	implementation 'com.h2database:h2'
 }
 
