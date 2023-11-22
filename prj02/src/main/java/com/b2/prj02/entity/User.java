@@ -40,6 +40,7 @@ public class User implements UserDetails {
     @Column(name = "pay_money")
     private Integer payMoney;
 
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     public User updateStatus(UserStatus newStatus) {

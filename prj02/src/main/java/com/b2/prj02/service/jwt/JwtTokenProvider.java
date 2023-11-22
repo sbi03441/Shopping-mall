@@ -37,7 +37,7 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // JWT 토큰 생성
+//     JWT 토큰 생성 (이메일)
     public String createToken(String email, UserStatus status) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
@@ -49,6 +49,19 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
                 .compact();
     }
+
+    // JWT 토큰 생성 (user_idx)
+//    public String createToken(Long user_idx, UserStatus status) {
+//        Claims claims = Jwts.claims().setSubject(String.valueOf(user_idx));
+//        claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
+//        Date now = new Date();
+//        return Jwts.builder()
+//                .setClaims(claims) // 정보 저장
+//                .setIssuedAt(now) // 토큰 발행 시간
+//                .setExpiration(new Date(now.getTime() + tokenValidTime)) // 토큰 유효 시간
+//                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
+//                .compact();
+//    }
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {

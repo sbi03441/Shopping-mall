@@ -1,8 +1,8 @@
 package com.b2.prj02.controller;
 
-import com.b2.prj02.dto.UserDeleteRequestDTO;
-import com.b2.prj02.dto.UserLoginRequestDTO;
-import com.b2.prj02.dto.UserSignupRequestDTO;
+import com.b2.prj02.dto.request.UserDeleteRequestDTO;
+import com.b2.prj02.dto.request.UserLoginRequestDTO;
+import com.b2.prj02.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.LockedUser;
 import com.b2.prj02.service.UserService;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
 
