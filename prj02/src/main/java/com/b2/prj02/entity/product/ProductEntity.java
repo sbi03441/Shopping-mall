@@ -46,10 +46,14 @@ public class ProductEntity {
     @Column(name = "product_detail")
     private String productDetail;
 
+    @Column(name = "img1")
     private String img1;
+    @Column(name = "img2")
     private String img2;
+    @Column(name = "img3")
     private String img3;
 
+    @Column(name = "option")
     private String option;
 
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class ProductCreateRequestDTO {
-    private final Long category;
+    private Long category;
     private String productName;
     private double price;
     private int productQuantity;

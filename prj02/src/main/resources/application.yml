@@ -16,6 +16,16 @@ security:
     secret: superCoding
     token-validity-in-seconds: 604800
 
+mvc:
+  pathmatch:
+    matching-strategy: ant_path_matcher
+
+logging:
+  level:
+    org.springframework : DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 #springdoc:
 #  default-consumes-media-type: application/json

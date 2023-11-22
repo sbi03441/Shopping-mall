@@ -30,4 +30,7 @@ public class SellerUpdateQuantityRequestDTO {
         this.option = option;  // 예: "s,m,l,xl" -> ["s", "m", "l", "xl"]
         this.updatedProductQuantity = updatedProductQuantity;
     }
+
+    public void setProductId(Long productId) {
+    }
 }

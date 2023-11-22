@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryDTO {
-    private final Long categoryId;
+    private final Long category;
     private String categoryName;
 
-    public CategoryDTO(Long categoryId, String categoryName) {
-        this.categoryId = categoryId;
+    public CategoryDTO(Long category, String categoryName) {
+        this.category = category;
         this.categoryName = categoryName;
     }
 }

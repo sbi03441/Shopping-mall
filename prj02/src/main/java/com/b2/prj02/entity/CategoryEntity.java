@@ -26,4 +26,7 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category")
     private List<ProductEntity> productList;
 
+    public CategoryEntity(Long category) {
+        this.category = category;
+    }
 }
