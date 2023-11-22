@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@CrossOrigin(origins = "*")
 public class UserDeleteRequestDTO {
     private String email;
     private String password;

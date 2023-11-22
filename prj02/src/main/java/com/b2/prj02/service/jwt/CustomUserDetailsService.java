@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Optional;
 
 @Component
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;

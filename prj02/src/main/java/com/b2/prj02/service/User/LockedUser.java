@@ -1,4 +1,4 @@
-package com.b2.prj02.service;
+package com.b2.prj02.service.User;
 
 import com.b2.prj02.entity.User;
 import com.b2.prj02.repository.UserRepository;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.*;
 
 @Component
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class LockedUser {
     private final UserRepository userRepository;

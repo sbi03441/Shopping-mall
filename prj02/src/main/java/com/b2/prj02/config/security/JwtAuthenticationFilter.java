@@ -3,7 +3,6 @@ package com.b2.prj02.config.security;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@CrossOrigin(origins = "*")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtTokenProvider jwtTokenProvider;

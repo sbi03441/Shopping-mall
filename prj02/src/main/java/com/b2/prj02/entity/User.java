@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -20,7 +21,6 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user")
-@CrossOrigin(origins = "*")
 public class User implements UserDetails {
     @javax.persistence.Id
     @org.springframework.data.annotation.Id
@@ -31,8 +31,14 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "nick_name")
+    private String nickName;
+
+    private String fileName;
+    private String filePath;
+
+//    @Column(name = "phone_number")
+//    private String phoneNumber;
 
     private String address;
     private String gender;
@@ -41,6 +47,8 @@ public class User implements UserDetails {
     private Integer payMoney;
 
     private UserStatus status;
+
+
 
     public User updateStatus(UserStatus newStatus) {
         this.status = newStatus;
@@ -55,6 +63,10 @@ public class User implements UserDetails {
 
     public void resetStack(){
         this.stack = 0;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @Override
@@ -86,4 +98,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

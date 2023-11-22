@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@CrossOrigin(origins = "*")
 public class UserLoginRequestDTO {
     private String email;
     private String password;
