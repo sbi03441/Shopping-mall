@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.rmi.NotBoundException;
 import java.util.Optional;
 
@@ -41,6 +42,11 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             throw new ProductNotFoundException("상품을 찾을 수 없습니다.");
         }
+    }
+
+    @Override
+    public PaginationResponse<ProductListResponse> getProductList(ProductListRequest productListRequest, Pageable pageable) {
+        return null;
     }
 
 }
