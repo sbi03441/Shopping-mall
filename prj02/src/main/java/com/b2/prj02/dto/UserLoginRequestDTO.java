@@ -1,5 +1,6 @@
 package com.b2.prj02.dto;
 
+import com.b2.prj02.role.UserStatus;
 import lombok.*;
 
 @Getter@Setter

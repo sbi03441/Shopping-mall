@@ -6,12 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
 
     @Query("SELECT u FROM User u WHERE u.email = :email")
     UserDetails findUserDetailByEmail(@Param("email") String email);
