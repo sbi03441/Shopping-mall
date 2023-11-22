@@ -9,5 +9,5 @@ public class AuthHolder {
     public static String getProfileEmail() {
         return profileEmailHolder.get();
     }
-    //TODO 토큰에 이메일 뿐 수정
+
 }
