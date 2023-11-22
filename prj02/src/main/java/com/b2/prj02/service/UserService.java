@@ -38,7 +38,7 @@ public class UserService {
                                 .gender(user.getGender())
                                 .phoneNumber(user.getPhoneNumber())
                                 .stack(0)
-                                .status(UserStatus.USER)
+                                .status(user.getStatus())
                                 .build();
 
             userRepository.save(newUser);
