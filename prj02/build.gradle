@@ -33,26 +33,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.3'  // MariaDB JDBC 드라이버 의존성 추가
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	implementation 'mysql:mysql-connector-java:8.0.33'
 
 	//   Spring Security & JWT
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT 라이브러리
-
-	// MapStruct
-	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-
-	// Swagger
-	implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
-	// SpringDoc 적용
-	// implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
-
-	// h2 테이터베이스
-	implementation 'com.h2database:h2'
 }
 
 tasks.named('bootBuildImage') {

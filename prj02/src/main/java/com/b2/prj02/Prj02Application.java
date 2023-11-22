@@ -13,13 +13,4 @@ public class Prj02Application {
 		SpringApplication.run(Prj02Application.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://15.164.234.129:8080");
-			}
-		};
-	}
 }

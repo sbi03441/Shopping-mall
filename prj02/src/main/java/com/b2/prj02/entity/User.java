@@ -21,7 +21,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "`user`")
 public class User implements UserDetails {
     @javax.persistence.Id
     @org.springframework.data.annotation.Id
@@ -32,8 +32,14 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "nick_name")
+    private String nickName;
+
+    private String fileName;
+    private String filePath;
+
+//    @Column(name = "phone_number")
+//    private String phoneNumber;
 
     private String address;
     private String gender;
@@ -47,6 +53,20 @@ public class User implements UserDetails {
     public User updateStatus(UserStatus newStatus) {
         this.status = newStatus;
         return this;
+    }
+
+    private Integer stack;
+
+    public void addStack() {
+        this.stack++;
+    }
+
+    public void resetStack(){
+        this.stack = 0;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @Override
