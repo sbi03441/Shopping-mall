@@ -31,6 +31,7 @@ public class ProfileController {
         return ResponseEntity.ok(profileInfoResponse);
     }
     // 장바구니 조회
+    // TODO : 미완성
     @GetMapping("/cart")
     public ResponseEntity<List<ShoppingCartListResponseDTO>> getShoppingCart(){
         String profileEmail = AuthHolder.getProfileEmail();
