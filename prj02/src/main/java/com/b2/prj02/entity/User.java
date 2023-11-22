@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user")
+@CrossOrigin(origins = "*")
 public class User implements UserDetails {
     @javax.persistence.Id
     @org.springframework.data.annotation.Id
@@ -44,6 +46,16 @@ public class User implements UserDetails {
     public User updateStatus(UserStatus newStatus) {
         this.status = newStatus;
         return this;
+    }
+
+    private Integer stack;
+
+    public void addStack() {
+        this.stack++;
+    }
+
+    public void resetStack(){
+        this.stack = 0;
     }
 
     @Override
