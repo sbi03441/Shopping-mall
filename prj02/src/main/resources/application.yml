@@ -15,3 +15,16 @@ security:
     header: Authorization
     secret: superCoding
     token-validity-in-seconds: 604800
+
+aws:
+  accessKeyId: AKIA2WSJ73WOI2ZIWIMW
+  secretKey: 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
+  region: ap-northeast-2
+  s3:
+    bucketName: project2team
+
+
+
+#<사용자 이름 : S3Aceess>
+#1. accessKey :
+#2. secretKey :
