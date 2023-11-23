@@ -1,5 +1,6 @@
 package com.b2.prj02.entity;
 
+import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.role.CustomGrantedAuthority;
 import com.b2.prj02.role.UserStatus;
 import lombok.AllArgsConstructor;
@@ -38,14 +39,17 @@ public class User implements UserDetails {
     private String fileName;
     private String filePath;
 
-//    @Column(name = "phone_number")
-//    private String phoneNumber;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     private String address;
     private String gender;
 
     @Column(name = "pay_money")
     private Integer payMoney;
+
+    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL)
+    private List<ProductEntity> productList;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
