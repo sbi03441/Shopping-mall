@@ -1,33 +1,32 @@
 package com.b2.prj02.controller;
 
-import com.b2.prj02.dto.request.UserDeleteRequestDTO;
-import com.b2.prj02.dto.request.UserLoginRequestDTO;
-import com.b2.prj02.dto.request.UserSignupRequestDTO;
+import com.b2.prj02.dto.UserDeleteRequestDTO;
+import com.b2.prj02.dto.UserLoginRequestDTO;
+import com.b2.prj02.dto.UserSignupRequestDTO;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.User.UserService;
 import com.b2.prj02.service.jwt.TokenBlacklist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
 //***** 회원가입 *****
 
-    //1. 유저 정보를 DTO로 받아들임
+//1. 유저 정보를 DTO로 받아들임
 //2. 해당 유저 정보를 DB와 비교
 //3. 없는 유저일 시 password Encoding 후 DB에 Save
     @PostMapping(value = "/signup")
@@ -49,9 +48,10 @@ public class UserController {
     }
 
 
+
 //***** 로그인 *****
 
-    //1. 유저 email & password 받아들임
+//1. 유저 email & password 받아들임
 //2. 해당 email의 DB에 저장된 password를 decoding 후 해당 password 비교
 //3. 일치 시 Refresh Token 유무 확인
 //4-1. Refresh Token이 없다면 유저 정보를 저장한 Claims로 Access토큰과 Refresh토큰 발급
@@ -78,7 +78,7 @@ public class UserController {
 
 //***** 회원 탈퇴 *****
 
-    //1. 해당 유저의 Token값과 유저 정보를 받음
+//1. 해당 유저의 Token값과 유저 정보를 받음
 //2. 유저 일치 여부 확인 (DB에서 유저 확인 & Token의 sub와 유저 정보 매치)
 //3. 해당 유저 확인 시 status를 DELETED로 변경
 //4. 해당 유저의 Refresh Token과 Access Token을 blacklist에 추가

@@ -1,10 +1,9 @@
 package com.b2.prj02.service.User;
 
-import com.b2.prj02.dto.request.UserDeleteRequestDTO;
-import com.b2.prj02.dto.request.UserLoginRequestDTO;
-import com.b2.prj02.dto.request.UserSignupRequestDTO;
+import com.b2.prj02.dto.UserDeleteRequestDTO;
+import com.b2.prj02.dto.UserLoginRequestDTO;
+import com.b2.prj02.dto.UserSignupRequestDTO;
 import com.b2.prj02.entity.User;
-import com.b2.prj02.repository.ProfileRepository;
 import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -33,7 +31,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final ProfileRepository profileRepository;
     private final LockedUser lockedUser;
     public ResponseEntity<?> signup(UserSignupRequestDTO user) {
         if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
@@ -153,6 +150,4 @@ public class UserService {
 //        userRepository.save(user);
 //        return ResponseEntity.status(200).body("ok");
 //    }
-
 }
-
