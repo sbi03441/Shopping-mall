@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/user/logout", "/api/user/delete").access("hasAnyRole('USER', 'SELLER') and not hasRole('DELETED')")
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/shop/**").hasAnyRole("USER", "SELLER")
                 .antMatchers("/api/product/**").hasRole("SELLER")

@@ -72,6 +72,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+
             return !TokenBlacklist.isBlacklisted(jwtToken) && !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
@@ -79,13 +80,15 @@ public class JwtTokenProvider {
     }
 
     public String findEmailBytoken(String token) {
-
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-
-        claims.get("role", String.class);
         // "userId" 클레임의 값을 얻기
         return claims.isEmpty() ? null : claims.get("sub", String.class);
-
+    }
+    public String findStatusBytoken(String token) {
+        // JWT 토큰을 디코딩하여 페이로드를 얻기
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        // "userId" 클레임의 값을 얻기
+        return claims.isEmpty() ? null : claims.get("role", String.class);
     }
 }
