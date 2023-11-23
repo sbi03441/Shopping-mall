@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @Builder
 public class ProductCreateRequestDTO {
-    @Getter
     private Long category;
     private String productName;
     private double price;

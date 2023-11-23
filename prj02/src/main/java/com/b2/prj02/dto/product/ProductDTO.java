@@ -1,5 +1,7 @@
 package com.b2.prj02.dto.product;
 
+import com.b2.prj02.entity.CategoryEntity;
+import com.b2.prj02.entity.User;
 import com.b2.prj02.entity.product.ProductEntity;
 import lombok.*;
 
@@ -13,8 +15,8 @@ import java.util.List;
 public class ProductDTO {
 
     private final Long productId;
-    private final Long category;
-    private final Long userId;
+    private final CategoryEntity category;
+    private final User userId;
     private String productName;
     private double price;
     private int productQuantity;
@@ -27,7 +29,7 @@ public class ProductDTO {
     private List<String> option;
 
     @Builder
-    public ProductDTO(Long productId, Long category, Long userId, String productName, double price, int productQuantity, Timestamp registerDate, Timestamp saleEndDate, String productDetail, String img1, String img2, String img3, List<String> option) {
+    public ProductDTO(Long productId, CategoryEntity category, User userId, String productName, double price, int productQuantity, Timestamp registerDate, Timestamp saleEndDate, String productDetail, String img1, String img2, String img3, List<String> option) {
         this.productId = productId;
         this.category = category;
         this.userId = userId;
@@ -48,8 +50,8 @@ public class ProductDTO {
     public static ProductDTO toProductDTO(ProductEntity product){
         return ProductDTO.builder()
                 .productId(product.getProductId())
-                .category(product.getProductId())
-                .userId(product.getProductId())
+                .category(product.getCategory())
+                .userId(product.getUserId())
                 .productName(product.getProductName())
                 .price(product.getPrice())
                 .productQuantity(product.getProductQuantity())

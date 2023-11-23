@@ -118,6 +118,7 @@ public class SellerService {
 
     // ProductEntity 생성
     private ProductEntity CreateProductEntity(ProductCreateRequestDTO productCreateRequestDTO, User user) {
+
         return ProductEntity.builder()
                 .category(CategoryEntity.builder().category(productCreateRequestDTO.getCategory()).build())
                 .productName(productCreateRequestDTO.getProductName())
