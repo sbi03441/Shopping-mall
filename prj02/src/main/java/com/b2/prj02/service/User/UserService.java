@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -154,4 +153,6 @@ public class UserService {
 //        userRepository.save(user);
 //        return ResponseEntity.status(200).body("ok");
 //    }
+
 }
+

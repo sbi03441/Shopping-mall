@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,8 +41,8 @@ public class User implements UserDetails {
     private String fileName;
     private String filePath;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+//    @Column(name = "phone_number")
+//    private String phoneNumber;
 
     private String address;
     private String gender;
@@ -48,11 +50,13 @@ public class User implements UserDetails {
     @Column(name = "pay_money")
     private Integer payMoney;
 
+
     @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL)
     private List<ProductEntity> productList;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
 
     public User updateStatus(UserStatus newStatus) {
         this.status = newStatus;
@@ -116,4 +120,5 @@ public class User implements UserDetails {
     public boolean isSeller() {
         return status == UserStatus.SELLER;
     }
+
 }

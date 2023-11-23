@@ -13,15 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
+//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
+
 //***** 회원가입 *****
 
     //1. 유저 정보를 DTO로 받아들임
