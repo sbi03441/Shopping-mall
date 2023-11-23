@@ -1,12 +1,12 @@
 package com.b2.prj02.service;
 
 import com.b2.prj02.dto.product.ProductDTO;
-import com.b2.prj02.dto.sellerDTO.ProductCreateRequestDTO;
-import com.b2.prj02.dto.sellerDTO.SellerUpdateQuantityRequestDTO;
+import com.b2.prj02.dto.request.ProductCreateRequestDTO;
+import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
 import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
-import com.b2.prj02.repository.ProductRepository;
+import com.b2.prj02.repository.product.ProductRepository;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.service.jwt.JwtTokenProvider;

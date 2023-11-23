@@ -1,4 +1,4 @@
-package com.b2.prj02.dto.sellerDTO;
+package com.b2.prj02.dto.request;
 
 import com.b2.prj02.entity.CategoryEntity;
 import lombok.*;
