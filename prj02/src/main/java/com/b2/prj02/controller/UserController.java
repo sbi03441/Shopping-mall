@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Set;
 
