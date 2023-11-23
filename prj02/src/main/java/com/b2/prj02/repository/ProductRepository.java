@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 

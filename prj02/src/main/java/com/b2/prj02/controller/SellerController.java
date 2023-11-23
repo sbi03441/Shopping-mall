@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class SellerController {
 
     private final SellerService sellerService;

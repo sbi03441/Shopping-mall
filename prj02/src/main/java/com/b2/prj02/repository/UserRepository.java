@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
