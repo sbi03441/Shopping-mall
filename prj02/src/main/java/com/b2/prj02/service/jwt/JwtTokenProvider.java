@@ -37,6 +37,7 @@ public class JwtTokenProvider {
     }
 
 //     JWT 토큰 생성 (이메일)
+
     public String createToken(String email, UserStatus status) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
@@ -104,4 +105,6 @@ public class JwtTokenProvider {
         // "userId" 클레임의 값을 얻기
         return claims.isEmpty() ? null : claims.get("role", String.class);
     }
+
 }
+
