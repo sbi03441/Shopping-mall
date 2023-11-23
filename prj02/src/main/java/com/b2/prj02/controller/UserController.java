@@ -4,12 +4,17 @@ import com.b2.prj02.dto.request.UserDeleteRequestDTO;
 import com.b2.prj02.dto.request.UserLoginRequestDTO;
 import com.b2.prj02.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.repository.UserRepository;
-import com.b2.prj02.service.LockedUser;
-import com.b2.prj02.service.UserService;
+import com.b2.prj02.service.User.UserService;
+import com.b2.prj02.service.jwt.TokenBlacklist;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,15 +22,29 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
 //***** 회원가입 *****
 
 //1. 유저 정보를 DTO로 받아들임
 //2. 해당 유저 정보를 DB와 비교
 //3. 없는 유저일 시 password Encoding 후 DB에 Save
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup")
     public ResponseEntity<?> userSignup(@RequestBody UserSignupRequestDTO user){
         return userService.signup(user);
+    }
+
+    @Transactional
+    @PostMapping(value = "/signup/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveImage(@RequestHeader("X-AUTH-TOKEN") String token,
+                                       @RequestParam("file") MultipartFile file) throws IOException {
+        userService.saveImage(file, token);
+        return ResponseEntity.status(200).body("이미지 등록이 완료되었습니다.");
+    }
+
+    @PostMapping("/signup/dupEmail")
+    public Boolean checkEmail(@RequestBody UserSignupRequestDTO user){
+        return userRepository.findByEmail(user.getEmail()).isEmpty();
     }
 
 
@@ -49,6 +68,12 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity<?> userLogout(@RequestHeader("X-AUTH-TOKEN") String token){
         return userService.logout(token);
+    }
+
+
+    @GetMapping("/blacklist")
+    public Set<String> getBlackList(){
+        return TokenBlacklist.getBlacklist();
     }
 
 //***** 회원 탈퇴 *****

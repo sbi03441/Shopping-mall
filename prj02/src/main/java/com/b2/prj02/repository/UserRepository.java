@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Optional;
 
 @Repository
-@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
