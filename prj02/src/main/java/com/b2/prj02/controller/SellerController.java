@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class SellerController {
 
     private final SellerService sellerService;
@@ -36,13 +36,13 @@ public class SellerController {
         } catch (AccessDeniedException e) {
             return handleAccessDeniedException(e);
         } catch (IllegalArgumentException e) {
-            return handleIllegalArgumentException(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 등록 중 오류가 발생했습니다.");
         } catch (Exception e) {
             return handleInternalServerError(e);
         }
     }
     @GetMapping("/{userId}/active")
-    public ResponseEntity<List<ProductCreateRequestDTO>> getActiveProducts(@PathVariable("userId") Long userId,
+    public ResponseEntity<?> getActiveProducts(@PathVariable("userId") Long userId,
                                                                            @RequestHeader("X-AUTH-TOKEN") String token) {
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
@@ -69,7 +69,7 @@ public class SellerController {
             String userEmail = jwtTokenProvider.getUserEmail(token);
 
             sellerUpdateQuantityRequestDTO.setProductId(productId);
-            ProductEntity updatedProduct = sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail);
+            ProductEntity updatedProduct = ProductEntity.fromDto(sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail));
             return ResponseEntity.ok("물품 재고가 성공적으로 수정되었습니다. 업데이트된 물품 ID: " + updatedProduct.getProductId());
         } catch (IllegalArgumentException e) {
             return handleIllegalArgumentException(e);
@@ -79,7 +79,7 @@ public class SellerController {
     }
     @GetMapping("/{userId}/sold")
     public ResponseEntity<?> getSoldProducts(@PathVariable Long userId,
-                                                  @RequestHeader("X-AUTH-TOKEN") String token) {
+                                             @RequestHeader("X-AUTH-TOKEN") String token) {
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
 

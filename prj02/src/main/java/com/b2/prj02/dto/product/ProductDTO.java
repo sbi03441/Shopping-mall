@@ -53,13 +53,13 @@ public class ProductDTO {
                 .productName(product.getProductName())
                 .price(product.getPrice())
                 .productQuantity(product.getProductQuantity())
-                .registerDate(Timestamp.valueOf(product.getRegisterDate()))
-                .saleEndDate(Timestamp.valueOf(product.getSaleEndDate()))
+                .registerDate(Timestamp.valueOf(String.valueOf(product.getRegisterDate())))
+                .saleEndDate(Timestamp.valueOf(String.valueOf(product.getSaleEndDate())))
                 .productDetail(product.getProductDetail())
                 .img1(product.getImg1())
                 .img2(product.getImg2())
                 .img3(product.getImg3())
-                .option(Collections.singletonList(product.getOption()))
+                .option(product.getOption())
                 .build();
     }
 

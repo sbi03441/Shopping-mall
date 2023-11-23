@@ -10,6 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "category")
 public class CategoryEntity {
 
@@ -24,17 +26,5 @@ public class CategoryEntity {
 
     @OneToMany(mappedBy = "category")
     private List<ProductEntity> productList;
-
-    // 기본 생성자 추가
-    public CategoryEntity() {
-    }
-
-    // 인자를 받는 생성자 추가
-    public CategoryEntity(Long category, String categoryName, List<ProductEntity> productList) {
-        this.category = category;
-        this.categoryName = categoryName;
-        this.productList = productList;
-    }
-
 
 }

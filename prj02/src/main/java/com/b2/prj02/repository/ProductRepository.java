@@ -6,18 +6,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-@CrossOrigin(origins = "*")
+import java.util.Optional;
+
+@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
+
     //특정 사용자의 판매 상품 조회
-    List<ProductEntity> findByUserIdAndSaleEndDateBefore(User userId,LocalDateTime currentDate);
+    List<ProductEntity> findByUserIdAndSaleEndDateBefore(Long userId, LocalDate currentDate);
 
 
     // 판매자 아이디와 판매 종료 날짜가 지난 상품 조회
-    List<ProductEntity> findByUserIdAndSaleEndDateAfter(User userId, LocalDateTime saleEndDate);
+    List<ProductEntity> findByUserIdAndSaleEndDateAfter(Long userId, LocalDate saleEndDate);
 
 
 

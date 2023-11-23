@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -16,9 +18,10 @@ public class SellerUpdateQuantityRequestDTO {
     private String img1;
     private String img2;
     private String img3;
-    private String[] option;
+    private List<String> option;
 
-    public SellerUpdateQuantityRequestDTO(Long productId, Long category, String productName, double price, int productQuantity,  String img1,String img2, String img3,String[] option) {
+
+    public SellerUpdateQuantityRequestDTO(Long productId, Long category, String productName, double price, int productQuantity,  String img1,String img2, String img3,List<String> option) {
         this.productId = productId;
         this.category = category;
         this.productName = productName;

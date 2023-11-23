@@ -1,12 +1,14 @@
 package com.b2.prj02.entity.product;
 
+import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.swing.text.html.Option;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -23,9 +25,10 @@ public class ProductEntity {
     @Column(name = "product_idx")
     private Long productId;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne    // (cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_idx")
     private CategoryEntity category;
+
 
     @ManyToOne
     @JoinColumn(name = "user_idx")
@@ -41,10 +44,10 @@ public class ProductEntity {
     private Integer productQuantity;
 
     @Column(name = "register_date")
-    private LocalDateTime registerDate;
+    private LocalDate registerDate;
 
     @Column(name = "sale_end_date")
-    private LocalDateTime saleEndDate;
+    private LocalDate saleEndDate;
 
     @Column(name = "product_detail")
     private String productDetail;
@@ -56,12 +59,48 @@ public class ProductEntity {
     @Column(name = "img3")
     private String img3;
 
-    @JoinColumn(name = "option_idx")
-    private String option;
+    @ElementCollection
+    @CollectionTable(name = "product_options", joinColumns = @JoinColumn(name = "product_idx"))
+    private List<String> option;
 
-    // getOption 메서드 수정
-    public String[] getOptionArray() {
-        return option != null ? option.split(",") : new String[0];
+
+    //DTO to Entity
+    public static ProductEntity fromDto(ProductDTO product) {
+        return ProductEntity.builder()
+                .productId(product.getProductId())
+                .userId(User.builder().userId(product.getUserId()).build())
+                .category(CategoryEntity.builder().category(product.getCategory()).build())//
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .productQuantity(product.getProductQuantity())
+                .registerDate(LocalDate.parse((CharSequence) product.getRegisterDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .saleEndDate(LocalDate.parse((CharSequence) product.getSaleEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .productDetail(product.getProductDetail())
+                .img1(product.getImg1())
+                .img2(product.getImg2())
+                .img3(product.getImg3())
+                .option(product.getOption())
+                .build();
     }
+
+    //Entity to DTO
+    public ProductDTO toDto() {
+        return ProductDTO.builder()
+                .productId(productId)
+                .userId(userId.getUserId())
+                .category(category.getCategory())
+                .productName(productName)
+                .price(price)
+                .productQuantity(productQuantity)
+                .registerDate(Timestamp.valueOf(registerDate.atStartOfDay()))
+                .saleEndDate(Timestamp.valueOf(saleEndDate.atStartOfDay()))
+                .productDetail(productDetail)
+                .img1(img1)
+                .img2(img2)
+                .img3(img3)
+                .option(option)
+                .build();
+    }
+
 
 }

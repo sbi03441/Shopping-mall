@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -18,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
+                .authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/shop/**").hasAnyRole("USER", "SELLER")
                 .antMatchers("/api/product/**").hasRole("SELLER")
