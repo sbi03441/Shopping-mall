@@ -3,7 +3,6 @@ package com.b2.prj02.role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin(origins = "*")
 public class CustomGrantedAuthority implements GrantedAuthority {
 
     private final String role;
