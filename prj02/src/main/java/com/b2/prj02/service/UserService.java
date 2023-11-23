@@ -43,14 +43,26 @@ public class UserService {
                     .password(passwordEncoder.encode(user.getPassword()))
                     .address(user.getAddress())
                     .gender(user.getGender())
-                    .phoneNumber(user.getPhoneNumber())
+                    .nickName(user.getNickName())
                     .stack(0)
-                    .status(UserStatus.USER)
                     .build();
 
-            userRepository.save(newUser);
+            String status = user.getStatus();
 
-            return ResponseEntity.status(200).body("회원가입에 성공하셨습니다.");
+            switch (status){
+                case "USER" :
+                    newUser.updateStatus(UserStatus.USER);
+                    userRepository.save(newUser);
+                    return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
+
+                case "SELLER" :
+                    newUser.updateStatus(UserStatus.SELLER);
+                    userRepository.save(newUser);
+                    return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
+
+                default:
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("없는 Status입니다.");
+            }
         }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 가입된 정보입니다.");
     }
 
@@ -62,7 +74,7 @@ public class UserService {
 
 
         if (loginUser.get().getStack() >= 5)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 5회 실패로 계정이 잠겼습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("5회 이상 오류로 인해 접속이 1분간 불가 합니다");
 
 
         if (!passwordEncoder.matches(user.getPassword(), loginUser.get().getPassword())) {
@@ -70,24 +82,35 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("비밀번호를 다시 확인해주세요.");
         }
 
+        loginUser.get().resetStack();
+        userRepository.save(loginUser.get());
         String newToken = jwtTokenProvider.createToken(user.getEmail(), loginUser.get().getStatus());
+        if(jwtTokenProvider.findStatusBytoken(newToken).equals("DELETED")) {
+            TokenBlacklist.addToBlacklist(newToken);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("회원 탈퇴한 유저입니다.");
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(newToken);
-        return ResponseEntity.status(200).headers(headers).body("반갑습니다 " + user.getEmail() + "님");
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", loginUser.get().getEmail());
+        response.put("address", loginUser.get().getAddress());
+        response.put("staus", loginUser.get().getStatus().name());
+        response.put("nickname", loginUser.get().getNickName());
+//        login.put("profileimage", loginUser.get().getProfileimage());
+
+        return ResponseEntity.status(200).headers(headers).body(response);
     }
 
 
     public ResponseEntity<?> logout(String token) {
         try {
             String userEmail = jwtTokenProvider.findEmailBytoken(token);
-            if (userRepository.findByEmail(userEmail).isEmpty()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃에 실패하셨습니다.");
-            }
-
+            if (userRepository.findByEmail(userEmail).isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃에 실패하셨습니다.");
             TokenBlacklist.addToBlacklist(token);
             return ResponseEntity.status(200).body("이용해 주셔서 감사합니다.");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
             throw new MalformedJwtException("로그아웃에 실패하셨습니다.");
         }
     }
@@ -104,7 +127,31 @@ public class UserService {
             userRepository.save(updatedUser);
             return ResponseEntity.status(200).body("회원 탈퇴되셨습니다.");
         }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일 또는 비밀번호가 틀렸습니다.");
-
     }
-}
 
+
+
+    @Transactional
+    public void saveImage(MultipartFile file, String token) throws IOException {
+        Path filePath = Paths.get("C:\\Project\\BackEnd\\image").resolve(Objects.requireNonNull(file.getOriginalFilename()));
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        String email = jwtTokenProvider.findEmailBytoken(token);
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isPresent()){
+            user.get().setFilePath(filePath.toString());
+            userRepository.save(user.get());
+        }
+    }
+
+//    public ResponseEntity<String> saveImage2(MultipartFile file, User user) throws IOException {
+//        // 예시: 파일 시스템에 저장
+//        Path filePath = Paths.get("C:\\Project\\BackEnd\\image").resolve(Objects.requireNonNull(file.getOriginalFilename()));
+//        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//
+//        // 예시: 데이터베이스에 저장
+//        user.setFilePath(filePath.toString());
+//        userRepository.save(user);
+//        return ResponseEntity.status(200).body("ok");
+//    }
+}
