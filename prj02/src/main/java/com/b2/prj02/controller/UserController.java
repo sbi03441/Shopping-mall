@@ -19,7 +19,7 @@ import java.util.Set;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;

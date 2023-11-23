@@ -15,6 +15,7 @@ spring:
       max-request-size: 10MB
 
 
+
 security:
   jwt:
     header: Authorization
