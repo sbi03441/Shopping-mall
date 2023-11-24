@@ -4,7 +4,6 @@ import com.b2.prj02.entity.product.ProductEntity;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -48,8 +47,8 @@ public class ProductDTO {
     public static ProductDTO toProductDTO(ProductEntity product){
         return ProductDTO.builder()
                 .productId(product.getProductId())
-                .category(product.getProductId())
-                .userId(product.getProductId())
+                .category(product.getCategory().getCategory())
+                .userId(product.getUserId().getUserId())
                 .productName(product.getProductName())
                 .price(product.getPrice())
                 .productQuantity(product.getProductQuantity())

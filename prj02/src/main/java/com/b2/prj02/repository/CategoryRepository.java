@@ -16,4 +16,3 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
 
     Optional<CategoryEntity> findByCategory(Long category);
 }
-

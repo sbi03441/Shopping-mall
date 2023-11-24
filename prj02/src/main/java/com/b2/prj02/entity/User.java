@@ -121,4 +121,6 @@ public class User implements UserDetails {
         return status == UserStatus.SELLER;
     }
 
+
 }
+

@@ -5,6 +5,7 @@ import com.b2.prj02.dto.request.UserDeleteRequestDTO;
 import com.b2.prj02.dto.request.UserLoginRequestDTO;
 import com.b2.prj02.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.entity.User;
+
 import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.Image.S3Service;
@@ -34,6 +35,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+
     private final LockedUser lockedUser;
     private final S3Service s3Service;
 
@@ -102,6 +104,7 @@ public class UserService {
         }
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 가입된 정보입니다.");
+
     }
 
     public ResponseEntity<?> login(UserLoginRequestDTO user) {
@@ -123,7 +126,9 @@ public class UserService {
         loginUser.get().resetStack();
         userRepository.save(loginUser.get());
         String newToken = jwtTokenProvider.createToken(user.getEmail(), loginUser.get().getStatus());
+
         if (jwtTokenProvider.findStatusBytoken(newToken).equals("DELETED")) {
+
             TokenBlacklist.addToBlacklist(newToken);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("회원 탈퇴한 유저입니다.");
         }
@@ -134,6 +139,7 @@ public class UserService {
         response.put("email", loginUser.get().getEmail());
         response.put("address", loginUser.get().getAddress());
         response.put("staus", loginUser.get().getStatus().name());
+
         response.put("nick_name", loginUser.get().getNickName());
         response.put("file_path", loginUser.get().getFilePath());
 
@@ -162,6 +168,7 @@ public class UserService {
         User updatedUser = storedUser.map(user -> user.updateStatus(UserStatus.DELETED))
                 .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
 
+
         if (email.equals(deleteUser.getEmail()) && passwordEncoder.matches(deleteUser.getPassword(), storedUser.get().getPassword())) {
             userRepository.save(updatedUser);
             return ResponseEntity.status(200).body("회원 탈퇴되셨습니다.");
@@ -172,6 +179,7 @@ public class UserService {
     public String saveImage(MultipartFile file, User user) throws IOException {
 //        1. 로컬에 저장할 파일 경로를 생성합니다.
         Path filePath = Paths.get("C:\\Project\\BackEnd\\prj02").resolve(Objects.requireNonNull(file.getOriginalFilename()));
+
 
 //        2. multipartFile의 입력 스트림을 읽어와서 로컬 파일 경로에 저장합니다.
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);

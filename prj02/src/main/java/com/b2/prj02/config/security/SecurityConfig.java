@@ -1,5 +1,6 @@
 package com.b2.prj02.config.security;
 
+import com.b2.prj02.config.CorsConfig;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +19,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CorsConfig corsConfig;
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .csrf().disable()
@@ -35,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/product/**").hasRole("SELLER")
                 .anyRequest().authenticated()
                 .and()
+                .addFilter(corsConfig.corsFilter()) // ** CorsFilter 등록 **
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
     }
