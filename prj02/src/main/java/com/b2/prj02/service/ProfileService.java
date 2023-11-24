@@ -1,7 +1,7 @@
 package com.b2.prj02.service;
 
-import com.b2.prj02.dto.ProfileInfoResponseDTO;
-import com.b2.prj02.dto.ShoppingCartListResponseDTO;
+import com.b2.prj02.dto.response.ProfileInfoResponseDTO;
+import com.b2.prj02.dto.response.ShoppingCartListResponseDTO;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;

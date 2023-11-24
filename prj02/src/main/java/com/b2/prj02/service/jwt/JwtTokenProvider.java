@@ -1,6 +1,5 @@
 package com.b2.prj02.service.jwt;
 
-
 import com.b2.prj02.role.UserStatus;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

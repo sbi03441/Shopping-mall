@@ -1,10 +1,10 @@
 package com.b2.prj02.controller;
 
-import com.b2.prj02.dto.sellerDTO.ProductCreateRequestDTO;
-import com.b2.prj02.dto.sellerDTO.SellerUpdateQuantityRequestDTO;
+import com.b2.prj02.dto.request.ProductCreateRequestDTO;
+import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.service.SellerService;
-import com.b2.prj02.service.UserService;
+import com.b2.prj02.service.User.UserService;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

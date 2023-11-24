@@ -1,4 +1,4 @@
-package com.b2.prj02.dto.sellerDTO;
+package com.b2.prj02.dto.request;
 
 import com.b2.prj02.entity.CategoryEntity;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 public class ProductCreateRequestDTO {
-    @Getter
+
     private Long category;
     private String productName;
     private double price;

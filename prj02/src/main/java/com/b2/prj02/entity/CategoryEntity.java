@@ -15,8 +15,7 @@ import java.util.List;
 @Table(name = "category")
 public class CategoryEntity {
 
-    @javax.persistence.Id
-    @org.springframework.data.annotation.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_idx")
     private Long category;

@@ -1,12 +1,13 @@
 package com.b2.prj02.service;
 
 import com.b2.prj02.dto.product.ProductDTO;
-import com.b2.prj02.dto.sellerDTO.ProductCreateRequestDTO;
-import com.b2.prj02.dto.sellerDTO.SellerUpdateQuantityRequestDTO;
+import com.b2.prj02.dto.request.ProductCreateRequestDTO;
+import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
 import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
-import com.b2.prj02.repository.ProductRepository;
+import com.b2.prj02.repository.CategoryRepository;
+import com.b2.prj02.repository.product.ProductRepository;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.service.jwt.JwtTokenProvider;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class SellerService {
     private final ProductRepository productRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     // 판매 물품 등록
     @Transactional(rollbackFor = Exception.class)
@@ -120,7 +121,7 @@ public class SellerService {
     // ProductEntity 생성
     private ProductEntity CreateProductEntity(ProductCreateRequestDTO productCreateRequestDTO, User user) {
         return ProductEntity.builder()
-                .category(CategoryEntity.builder().category(productCreateRequestDTO.getCategory()).build())
+                .category(categoryRepository.findByCategory(productCreateRequestDTO.getCategory()).get())
                 .productName(productCreateRequestDTO.getProductName())
                 .price(productCreateRequestDTO.getPrice())
                 .productQuantity(productCreateRequestDTO.getProductQuantity())

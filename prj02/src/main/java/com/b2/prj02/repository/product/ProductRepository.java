@@ -1,4 +1,4 @@
-package com.b2.prj02.repository;
+package com.b2.prj02.repository.product;
 
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 //@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository

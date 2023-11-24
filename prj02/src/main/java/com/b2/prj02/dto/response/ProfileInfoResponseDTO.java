@@ -1,4 +1,4 @@
-package com.b2.prj02.dto;
+package com.b2.prj02.dto.response;
 
 import com.b2.prj02.entity.User;
 import com.b2.prj02.role.UserStatus;
