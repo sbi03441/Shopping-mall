@@ -23,7 +23,6 @@ import java.util.Set;
 public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
-
 //***** 회원가입 *****
 
 //1. 유저 정보를 DTO로 받아들임
@@ -31,16 +30,23 @@ public class UserController {
 //3. 없는 유저일 시 password Encoding 후 DB에 Save
     @Transactional
     @PostMapping(value = "/signup")
-    public ResponseEntity<?> userSignup(@RequestPart("user") UserSignupRequestDTO user){
+    public ResponseEntity<?> userSignup(@RequestBody UserSignupRequestDTO user){
         return userService.signup(user);
     }
 
     @Transactional
-    @PostMapping(value = "/signup/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> saveImage(@RequestHeader("X-AUTH-TOKEN") String token,
+    @PostMapping(value = "/signup/image/token",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveImageToToken(@RequestHeader("X-AUTH-TOKEN") String token,
                                        @RequestParam("file") MultipartFile file) throws IOException {
         User user = userService.checkUser(token);
         String url = userService.saveImage(file, user);
+        return ResponseEntity.status(200).body(url);
+    }
+
+    @Transactional
+    @PostMapping(value = "/signup/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveImage(@RequestParam("file") MultipartFile file) throws IOException {
+        String url = userService.saveImage(file);
         return ResponseEntity.status(200).body(url);
     }
 
@@ -50,7 +56,7 @@ public class UserController {
     }
 
     @Transactional
-    @PostMapping(value = "/signup-image")
+    @PostMapping(value = "/signup-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> userSignupImage(@RequestPart(value = "user") UserSignupRequestDTO user,
                                              @RequestPart(value = "file") MultipartFile file) throws IOException {
         return userService.signup(user, file);
