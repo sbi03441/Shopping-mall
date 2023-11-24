@@ -21,7 +21,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     // 판매자 아이디와 판매 종료 날짜가 지난 상품 조회
     List<ProductEntity> findByUserIdAndSaleEndDateAfter(Long userId, LocalDate saleEndDate);
 
-
-
-
 }
