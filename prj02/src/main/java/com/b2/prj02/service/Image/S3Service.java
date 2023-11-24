@@ -39,7 +39,7 @@ public class S3Service {
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
-
+//    3. AWS S3에 접근하기 위한 클라이언트를 생성합니다
     private S3Client buildS3Client() {
         return S3Client.builder()
                 .region(Region.of(region))
@@ -68,17 +68,17 @@ public class S3Service {
         return url.toString();
     }
 
-    public void deleteFileFromS3(String fileUrl) {
-        S3Client s3Client = buildS3Client();
-        String objectKey = getObjectKeyFromUrl(fileUrl); // URL에서 키(파일 경로 및 이름) 추출
-        s3Client.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(objectKey).build());
-    }
-
-    // URL에서 키(파일 경로 및 이름)를 추출하는 메서드
-    private String getObjectKeyFromUrl(String imageUrl) {
-        // 예: https://your-bucket-name.s3.amazonaws.com/uploads/filename.ext
-        String[] parts = imageUrl.split("/");
-        List<String> partList = Arrays.asList(parts);
-        return String.join("/", partList.subList(3, partList.size()));
-    }
+//    public void deleteFileFromS3(String fileUrl) {
+//        S3Client s3Client = buildS3Client();
+//        String objectKey = getObjectKeyFromUrl(fileUrl); // URL에서 키(파일 경로 및 이름) 추출
+//        s3Client.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(objectKey).build());
+//    }
+//
+//    // URL에서 키(파일 경로 및 이름)를 추출하는 메서드
+//    private String getObjectKeyFromUrl(String imageUrl) {
+//        // 예: https://your-bucket-name.s3.amazonaws.com/uploads/filename.ext
+//        String[] parts = imageUrl.split("/");
+//        List<String> partList = Arrays.asList(parts);
+//        return String.join("/", partList.subList(3, partList.size()));
+//    }
 }
