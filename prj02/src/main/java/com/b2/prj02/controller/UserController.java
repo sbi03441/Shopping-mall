@@ -24,7 +24,6 @@ import java.util.Set;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
 
 //***** 회원가입 *****
 
