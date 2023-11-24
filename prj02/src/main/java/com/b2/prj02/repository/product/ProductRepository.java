@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.util.List;
-import java.util.Optional;
+
 
 //@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository
@@ -22,9 +22,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     // 판매자 아이디와 판매 종료 날짜가 지난 상품 조회
     List<ProductEntity> findByUserIdAndSaleEndDateAfter(Long userId, LocalDate saleEndDate);
-
-
-
 
 }
 
