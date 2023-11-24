@@ -2,8 +2,9 @@ package com.b2.prj02.controller;
 
 
 import com.b2.prj02.dto.response.ProfileInfoResponseDTO;
-import com.b2.prj02.dto.response.ShoppingCartListResponseDTO;
 
+import com.b2.prj02.dto.response.ShoppingCartListResponseDTO;
+import com.b2.prj02.entity.ShoppingCart;
 import com.b2.prj02.service.ProfileService;
 import com.b2.prj02.service.jwt.AuthHolder;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
-import java.util.List;
 
 
 @RestController
@@ -34,7 +32,7 @@ public class ProfileController {
     // 장바구니 조회
     // TODO : 미완성
     @GetMapping("/cart")
-    public ResponseEntity<List<ShoppingCartListResponseDTO>> getShoppingCart(){
+    public ShoppingCartListResponseDTO getShoppingCart(){
         String profileEmail = AuthHolder.getProfileEmail();
         return profileService.getShoppingCartList(profileEmail);
     }
