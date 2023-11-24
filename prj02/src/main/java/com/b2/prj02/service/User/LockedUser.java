@@ -18,7 +18,7 @@ public class LockedUser {
         failedStack.add(user.getEmail());
         user.addStack();
         userRepository.save(user);
-        if(user.getStack()==5)
+        if (user.getStack() == 5)
             lockUser(user);
     }
 
