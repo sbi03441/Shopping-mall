@@ -12,4 +12,7 @@ import java.util.Optional;
 //@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
+
+
+    Optional<CategoryEntity> findByCategory(Long category);
 }
