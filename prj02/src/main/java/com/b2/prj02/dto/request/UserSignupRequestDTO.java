@@ -22,4 +22,5 @@ public class UserSignupRequestDTO {
     private String address;
     private String gender;
     private String status;
+    private String filePath;
 }

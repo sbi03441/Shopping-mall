@@ -45,6 +45,7 @@ public class UserService {
                     .address(user.getAddress())
                     .gender(user.getGender())
                     .nickName(user.getNickName())
+                    .filePath(user.getFilePath())
                     .stack(0)
                     .build();
 
