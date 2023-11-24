@@ -41,8 +41,8 @@ public class User implements UserDetails {
     private String fileName;
     private String filePath;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+//    @Column(name = "phone_number")
+//    private String phoneNumber;
 
     private String address;
     private String gender;
@@ -121,4 +121,6 @@ public class User implements UserDetails {
         return status == UserStatus.SELLER;
     }
 
+
 }
+

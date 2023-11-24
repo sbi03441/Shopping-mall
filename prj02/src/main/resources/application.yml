@@ -25,6 +25,7 @@ aws:
   secretKey: EIGmAvkGbdSKIddN/cuzWovuIM2t79kbwD4AACKN
   region: ap-northeast-2
   s3:
+
     bucketName: project2team
 
 
@@ -33,3 +34,4 @@ aws:
 #<사용자 이름 : S3Aceess>
 #1. accessKey :
 #2. secretKey :
+

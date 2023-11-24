@@ -1,5 +1,6 @@
 package com.b2.prj02.controller;
 
+
 import com.b2.prj02.Exception.NotFoundException;
 import com.b2.prj02.dto.request.UserDeleteRequestDTO;
 import com.b2.prj02.dto.request.UserLoginRequestDTO;
@@ -22,6 +23,7 @@ import java.util.Set;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
+//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
 

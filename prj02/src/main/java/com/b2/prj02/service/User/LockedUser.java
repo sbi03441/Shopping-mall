@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.*;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,7 @@ public class LockedUser {
         failedStack.add(user.getEmail());
         user.addStack();
         userRepository.save(user);
+
         if (user.getStack() == 5)
             lockUser(user);
     }
@@ -34,3 +36,4 @@ public class LockedUser {
         }, 1, TimeUnit.MINUTES);
     }
 }
+
