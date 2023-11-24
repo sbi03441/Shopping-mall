@@ -49,13 +49,12 @@ public class UserController {
         return userService.checkEmail(email);
     }
 
-//    @Transactional
-//    @PostMapping(value = "/signupimage")
-//    public ResponseEntity<?> userSignupImage(@RequestPart("user") UserSignupRequestDTO user,
-//                                             @RequestPart("file") MultipartFile file) throws IOException {
-//        String url = userService.saveImage(file);
-//        return userService.signup(user, url);
-//    }
+    @Transactional
+    @PostMapping(value = "/signup-image")
+    public ResponseEntity<?> userSignupImage(@RequestPart(value = "user") UserSignupRequestDTO user,
+                                             @RequestPart(value = "file") MultipartFile file) throws IOException {
+        return userService.signup(user, file);
+    }
 
 
 

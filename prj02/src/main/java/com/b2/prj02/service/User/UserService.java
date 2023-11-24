@@ -36,7 +36,7 @@ public class UserService {
     private final S3Service s3Service;
 
     public ResponseEntity<?> signup(UserSignupRequestDTO user) {
-        if(checkEmail(user.getEmail())) {
+        if (checkEmail(user.getEmail())) {
             User newUser = User.builder()
                     .email(user.getEmail())
                     .password(passwordEncoder.encode(user.getPassword()))
@@ -44,6 +44,41 @@ public class UserService {
                     .gender(user.getGender())
                     .nickName(user.getNickName())
                     .stack(0)
+                    .build();
+
+            String status = user.getStatus();
+
+            switch (status) {
+                case "USER":
+                    newUser.updateStatus(UserStatus.USER);
+                    userRepository.save(newUser);
+                    return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
+
+                case "SELLER":
+                    newUser.updateStatus(UserStatus.SELLER);
+                    userRepository.save(newUser);
+                    return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
+
+                default:
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("없는 Status입니다.");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 가입된 정보입니다.");
+    }
+
+
+    public ResponseEntity<?> signup(UserSignupRequestDTO user, MultipartFile file) throws IOException {
+        String url = saveImage(file);
+        if (checkEmail(user.getEmail())) {
+            User newUser = User.builder()
+                    .email(user.getEmail())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .address(user.getAddress())
+                    .gender(user.getGender())
+                    .nickName(user.getNickName())
+                    .stack(0)
+                    .filePath(url)
                     .build();
 
             String status = user.getStatus();
@@ -86,7 +121,7 @@ public class UserService {
         loginUser.get().resetStack();
         userRepository.save(loginUser.get());
         String newToken = jwtTokenProvider.createToken(user.getEmail(), loginUser.get().getStatus());
-        if(jwtTokenProvider.findStatusBytoken(newToken).equals("DELETED")) {
+        if (jwtTokenProvider.findStatusBytoken(newToken).equals("DELETED")) {
             TokenBlacklist.addToBlacklist(newToken);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("회원 탈퇴한 유저입니다.");
         }
@@ -107,7 +142,8 @@ public class UserService {
     public ResponseEntity<?> logout(String token) {
         try {
             String userEmail = jwtTokenProvider.findEmailBytoken(token);
-            if (userRepository.findByEmail(userEmail).isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃에 실패하셨습니다.");
+            if (userRepository.findByEmail(userEmail).isEmpty())
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃에 실패하셨습니다.");
             TokenBlacklist.addToBlacklist(token);
             return ResponseEntity.status(200).body("이용해 주셔서 감사합니다.");
         } catch (Exception e) {
@@ -124,10 +160,10 @@ public class UserService {
         User updatedUser = storedUser.map(user -> user.updateStatus(UserStatus.DELETED))
                 .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
 
-        if(email.equals(deleteUser.getEmail()) && passwordEncoder.matches(deleteUser.getPassword(), storedUser.get().getPassword())){
+        if (email.equals(deleteUser.getEmail()) && passwordEncoder.matches(deleteUser.getPassword(), storedUser.get().getPassword())) {
             userRepository.save(updatedUser);
             return ResponseEntity.status(200).body("회원 탈퇴되셨습니다.");
-        }else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일 또는 비밀번호가 틀렸습니다.");
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일 또는 비밀번호가 틀렸습니다.");
     }
 
 
@@ -146,28 +182,27 @@ public class UserService {
         return url;
     }
 
-    public User checkUser(String token)  {
+    public String saveImage(MultipartFile file) throws IOException {
+//        1. 로컬에 저장할 파일 경로를 생성합니다.
+        Path filePath = Paths.get("C:\\Project\\BackEnd\\prj02").resolve(Objects.requireNonNull(file.getOriginalFilename()));
+
+//        2. multipartFile의 입력 스트림을 읽어와서 로컬 파일 경로에 저장합니다.
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        return s3Service.uploadFileAndGetUrl(filePath);
+    }
+
+    public User checkUser(String token) {
         String email = jwtTokenProvider.findEmailBytoken(token);
         Optional<User> user = userRepository.findByEmail(email);
 
-        if(user.isEmpty())
+        if (user.isEmpty())
             throw new NotFoundException("로그인을 다시 해주세요.");
 
         return user.get();
     }
 
     public Boolean checkEmail(String email) {
-        return userRepository.findByEmail(email).isEmpty()||userRepository.findByEmail(email).get().getStatus().equals(UserStatus.DELETED);
+        return userRepository.findByEmail(email).isEmpty() || userRepository.findByEmail(email).get().getStatus().equals(UserStatus.DELETED);
     }
-
-//    public ResponseEntity<String> saveImage2(MultipartFile file, User user) throws IOException {
-//        // 예시: 파일 시스템에 저장
-//        Path filePath = Paths.get("C:\\Project\\BackEnd\\image").resolve(Objects.requireNonNull(file.getOriginalFilename()));
-//        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//
-//        // 예시: 데이터베이스에 저장
-//        user.setFilePath(filePath.toString());
-//        userRepository.save(user);
-//        return ResponseEntity.status(200).body("ok");
-//    }
 }
