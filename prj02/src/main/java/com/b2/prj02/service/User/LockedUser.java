@@ -11,6 +11,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 @Component
 @RequiredArgsConstructor
 public class LockedUser {
@@ -21,6 +25,7 @@ public class LockedUser {
         failedStack.add(user.getEmail());
         user.addStack();
         userRepository.save(user);
+
         if (user.getStack() == 5)
             lockUser(user);
     }

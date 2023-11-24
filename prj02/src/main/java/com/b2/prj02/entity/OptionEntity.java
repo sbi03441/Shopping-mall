@@ -14,8 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "option")
 public class OptionEntity {
-    @javax.persistence.Id
-    @org.springframework.data.annotation.Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_idx")
     private Long optionId;

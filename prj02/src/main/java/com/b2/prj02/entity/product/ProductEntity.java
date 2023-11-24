@@ -19,8 +19,7 @@ import java.util.List;
 @Table(name = "product")
 public class ProductEntity {
 
-    @javax.persistence.Id
-    @org.springframework.data.annotation.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_idx")
     private Long productId;
@@ -68,8 +67,8 @@ public class ProductEntity {
     public static ProductEntity fromDto(ProductDTO product) {
         return ProductEntity.builder()
                 .productId(product.getProductId())
-                .userId(product.getUserId())
-                .category(product.getCategory())//
+                .userId(User.builder().userId(product.getUserId()).build())
+                .category(CategoryEntity.builder().category(product.getCategory()).build())
                 .productName(product.getProductName())
                 .price(product.getPrice())
                 .productQuantity(product.getProductQuantity())
@@ -87,8 +86,8 @@ public class ProductEntity {
     public ProductDTO toDto() {
         return ProductDTO.builder()
                 .productId(productId)
-                .userId(userId)
-                .category(category)
+                .userId(userId.getUserId())
+                .category(category.getCategory())
                 .productName(productName)
                 .price(price)
                 .productQuantity(productQuantity)
