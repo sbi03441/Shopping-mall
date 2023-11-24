@@ -28,7 +28,7 @@ public class UserController {
 
 //***** 회원가입 *****
 
-//1. 유저 정보를 DTO로 받아들임
+    //1. 유저 정보를 DTO로 받아들임
 //2. 해당 유저 정보를 DB와 비교
 //3. 없는 유저일 시 password Encoding 후 DB에 Save
     @Transactional
@@ -36,7 +36,6 @@ public class UserController {
     public ResponseEntity<?> userSignup(@RequestPart("user") UserSignupRequestDTO user){
         return userService.signup(user);
     }
-
 
     @Transactional
     @PostMapping(value = "/signup/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -47,13 +46,23 @@ public class UserController {
         return ResponseEntity.status(200).body(url);
     }
 
+    @PostMapping("/signup/dupEmail")
+    public Boolean checkEmail(@RequestBody String email){
+        return userService.checkEmail(email);
+    }
 
+    @Transactional
+    @PostMapping(value = "/signup-image")
+    public ResponseEntity<?> userSignupImage(@RequestPart(value = "user") UserSignupRequestDTO user,
+                                             @RequestPart(value = "file") MultipartFile file) throws IOException {
+        return userService.signup(user, file);
+    }
 
 
 
 //***** 로그인 *****
 
-//1. 유저 email & password 받아들임
+    //1. 유저 email & password 받아들임
 //2. 해당 email의 DB에 저장된 password를 decoding 후 해당 password 비교
 //3. 일치 시 Refresh Token 유무 확인
 //4-1. Refresh Token이 없다면 유저 정보를 저장한 Claims로 Access토큰과 Refresh토큰 발급
@@ -80,7 +89,7 @@ public class UserController {
 
 //***** 회원 탈퇴 *****
 
-//1. 해당 유저의 Token값과 유저 정보를 받음
+    //1. 해당 유저의 Token값과 유저 정보를 받음
 //2. 유저 일치 여부 확인 (DB에서 유저 확인 & Token의 sub와 유저 정보 매치)
 //3. 해당 유저 확인 시 status를 DELETED로 변경
 //4. 해당 유저의 Refresh Token과 Access Token을 blacklist에 추가
