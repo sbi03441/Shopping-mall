@@ -1,8 +1,8 @@
 package com.b2.prj02.controller;
 
 
-import com.b2.prj02.dto.reponse.ProfileInfoResponseDTO;
-import com.b2.prj02.dto.reponse.ShoppingCartListResponseDTO;
+import com.b2.prj02.dto.response.ProfileInfoResponseDTO;
+import com.b2.prj02.dto.response.ShoppingCartListResponseDTO;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.service.ProfileService;
 import com.b2.prj02.service.jwt.AuthHolder;
