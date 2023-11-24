@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,8 +101,6 @@ public class SellerService {
         return soldProducts.stream()
                 .map(this::createProductDTOFromEntity)
                 .collect(Collectors.toList());
-
-        return soldProductDTOs;
     }
 
     // ProductEntity 생성
