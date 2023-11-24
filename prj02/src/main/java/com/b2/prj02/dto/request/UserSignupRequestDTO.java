@@ -18,7 +18,6 @@ public class UserSignupRequestDTO {
     private String email;
     private String nickName;
     private String password;
-//    private String phoneNumber;
     private String address;
     private String gender;
     private String status;
