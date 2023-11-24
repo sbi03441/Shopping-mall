@@ -1,9 +1,9 @@
 package com.b2.prj02.service.User;
 
 import com.b2.prj02.Exception.NotFoundException;
-import com.b2.prj02.dto.UserDeleteRequestDTO;
-import com.b2.prj02.dto.UserLoginRequestDTO;
-import com.b2.prj02.dto.UserSignupRequestDTO;
+import com.b2.prj02.dto.request.UserDeleteRequestDTO;
+import com.b2.prj02.dto.request.UserLoginRequestDTO;
+import com.b2.prj02.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.role.UserStatus;
 import com.b2.prj02.repository.UserRepository;
@@ -175,39 +175,6 @@ public class UserService {
 
         return url;
     }
-    public String saveImage(MultipartFile file) throws IOException {
-//        1. 로컬에 저장할 파일 경로를 생성합니다.
-        Path filePath = Paths.get("C:\\Project\\BackEnd\\prj02").resolve(Objects.requireNonNull(file.getOriginalFilename()));
 
-//        2. multipartFile의 입력 스트림을 읽어와서 로컬 파일 경로에 저장합니다.
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        String url = s3Service.uploadFileAndGetUrl(filePath);
-
-//        user.setFilePath(url);
-//        userRepository.save(user);
-
-        return url;
-    }
-
-    public User checkUser(String token)  {
-        String email = jwtTokenProvider.findEmailBytoken(token);
-        Optional<User> user = userRepository.findByEmail(email);
-
-        if(user.isEmpty())
-            throw new NotFoundException("로그인을 다시 해주세요.");
-
-        return user.get();
-    }
-
-//    public ResponseEntity<String> saveImage2(MultipartFile file, User user) throws IOException {
-//        // 예시: 파일 시스템에 저장
-//        Path filePath = Paths.get("C:\\Project\\BackEnd\\image").resolve(Objects.requireNonNull(file.getOriginalFilename()));
-//        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//
-//        // 예시: 데이터베이스에 저장
-//        user.setFilePath(filePath.toString());
-//        userRepository.save(user);
-//        return ResponseEntity.status(200).body("ok");
-//    }
 }

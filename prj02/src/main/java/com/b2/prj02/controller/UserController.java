@@ -1,10 +1,9 @@
 package com.b2.prj02.controller;
 
 import com.b2.prj02.Exception.NotFoundException;
-import com.b2.prj02.dto.CheckUserEmailRequestDTO;
-import com.b2.prj02.dto.UserDeleteRequestDTO;
-import com.b2.prj02.dto.UserLoginRequestDTO;
-import com.b2.prj02.dto.UserSignupRequestDTO;
+import com.b2.prj02.dto.request.UserDeleteRequestDTO;
+import com.b2.prj02.dto.request.UserLoginRequestDTO;
+import com.b2.prj02.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.User.UserService;
@@ -37,13 +36,7 @@ public class UserController {
     public ResponseEntity<?> userSignup(@RequestPart("user") UserSignupRequestDTO user){
         return userService.signup(user);
     }
-    @Transactional
-    @PostMapping(value = "/signupimage")
-    public ResponseEntity<?> userSignupImage(@RequestPart("user") UserSignupRequestDTO user,
-                                            @RequestPart("file") MultipartFile file) throws IOException {
-        String url = userService.saveImage(file);
-        return userService.signup(user, url);
-    }
+
 
     @Transactional
     @PostMapping(value = "/signup/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -54,10 +47,7 @@ public class UserController {
         return ResponseEntity.status(200).body(url);
     }
 
-    @PostMapping("/signup/dupEmail")
-    public Boolean checkEmail(@RequestBody CheckUserEmailRequestDTO user){
-        return userRepository.findByEmail(user.getEmail()).isEmpty();
-    }
+
 
 
 
