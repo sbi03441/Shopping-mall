@@ -84,7 +84,6 @@ public class SellerService {
             throw new IllegalArgumentException("재고는 음수가 될 수 없습니다.");
         }
 
-        productEntity.setProductName(sellerUpdateQuantityRequestDTO.getProductName());
         productEntity.setProductQuantity(updatedQuantity);
 
         productRepository.save(productEntity);
