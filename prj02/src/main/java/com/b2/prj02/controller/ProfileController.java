@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/mypage")
-//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class ProfileController {
 
     private final ProfileService profileService;
