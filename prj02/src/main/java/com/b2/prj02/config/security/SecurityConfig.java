@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final CorsConfig corsConfig;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

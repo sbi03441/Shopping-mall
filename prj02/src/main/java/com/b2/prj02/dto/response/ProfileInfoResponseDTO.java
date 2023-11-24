@@ -23,7 +23,6 @@ public class ProfileInfoResponseDTO {
         return ProfileInfoResponseDTO.builder()
                 .userId(user.getUserId())
                 .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
                 .gender(user.getGender())
                 .payMoney(user.getPayMoney())

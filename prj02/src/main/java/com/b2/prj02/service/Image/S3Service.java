@@ -10,8 +10,17 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Service
@@ -30,7 +39,7 @@ public class S3Service {
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
-    //    3. AWS S3에 접근하기 위한 클라이언트를 생성합니다
+//    3. AWS S3에 접근하기 위한 클라이언트를 생성합니다
     private S3Client buildS3Client() {
         return S3Client.builder()
                 .region(Region.of(region))

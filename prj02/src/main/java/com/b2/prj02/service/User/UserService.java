@@ -13,15 +13,12 @@ import com.b2.prj02.service.jwt.JwtTokenProvider;
 import com.b2.prj02.service.jwt.TokenBlacklist;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.crossstore.ChangeSetPersister;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -78,7 +75,6 @@ public class UserService {
     public ResponseEntity<?> signup(UserSignupRequestDTO user, MultipartFile file) throws IOException {
         String url = saveImage(file);
         if (checkEmail(user.getEmail())) {
-
             User newUser = User.builder()
                     .email(user.getEmail())
                     .password(passwordEncoder.encode(user.getPassword()))
@@ -86,24 +82,18 @@ public class UserService {
                     .gender(user.getGender())
                     .nickName(user.getNickName())
                     .stack(0)
-
                     .filePath(url)
-
                     .build();
 
             String status = user.getStatus();
 
-
             switch (status) {
                 case "USER":
-
                     newUser.updateStatus(UserStatus.USER);
                     userRepository.save(newUser);
                     return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
 
-
                 case "SELLER":
-
                     newUser.updateStatus(UserStatus.SELLER);
                     userRepository.save(newUser);
                     return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
@@ -111,7 +101,6 @@ public class UserService {
                 default:
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body("없는 Status입니다.");
             }
-
         }
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 가입된 정보입니다.");
@@ -154,7 +143,6 @@ public class UserService {
         response.put("nick_name", loginUser.get().getNickName());
         response.put("file_path", loginUser.get().getFilePath());
 
-
         return ResponseEntity.status(200).headers(headers).body(response);
     }
 
@@ -162,10 +150,8 @@ public class UserService {
     public ResponseEntity<?> logout(String token) {
         try {
             String userEmail = jwtTokenProvider.findEmailBytoken(token);
-
             if (userRepository.findByEmail(userEmail).isEmpty())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃에 실패하셨습니다.");
-
             TokenBlacklist.addToBlacklist(token);
             return ResponseEntity.status(200).body("이용해 주셔서 감사합니다.");
         } catch (Exception e) {
@@ -193,6 +179,7 @@ public class UserService {
     public String saveImage(MultipartFile file, User user) throws IOException {
 //        1. 로컬에 저장할 파일 경로를 생성합니다.
         Path filePath = Paths.get("C:\\Project\\BackEnd\\prj02").resolve(Objects.requireNonNull(file.getOriginalFilename()));
+
 
 //        2. multipartFile의 입력 스트림을 읽어와서 로컬 파일 경로에 저장합니다.
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -229,4 +216,3 @@ public class UserService {
         return userRepository.findByEmail(email).isEmpty() || userRepository.findByEmail(email).get().getStatus().equals(UserStatus.DELETED);
     }
 }
-
