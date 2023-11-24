@@ -1,4 +1,4 @@
-package com.b2.prj02.exception.product;
+package com.b2.prj02.Exception.product;
 
 public class ProductNotFoundException extends RuntimeException {
 
