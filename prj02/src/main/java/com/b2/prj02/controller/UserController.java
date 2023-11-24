@@ -32,7 +32,7 @@ public class UserController {
 //3. 없는 유저일 시 password Encoding 후 DB에 Save
     @Transactional
     @PostMapping(value = "/signup")
-    public ResponseEntity<?> userSignup(@RequestPart("user") UserSignupRequestDTO user){
+    public ResponseEntity<?> userSignup(@RequestBody UserSignupRequestDTO user){
         return userService.signup(user);
     }
 
