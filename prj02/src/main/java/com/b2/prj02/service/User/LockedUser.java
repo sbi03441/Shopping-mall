@@ -1,4 +1,4 @@
-package com.b2.prj02.service;
+package com.b2.prj02.service.User;
 
 import com.b2.prj02.entity.User;
 import com.b2.prj02.repository.UserRepository;
