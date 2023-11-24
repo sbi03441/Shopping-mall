@@ -21,7 +21,7 @@ public class LockedUser {
         failedStack.add(user.getEmail());
         user.addStack();
         userRepository.save(user);
-        if(user.getStack()==5)
+        if (user.getStack() == 5)
             lockUser(user);
     }
 
@@ -33,17 +33,4 @@ public class LockedUser {
             userRepository.save(user);
         }, 1, TimeUnit.MINUTES);
     }
-
-//    public void lockUser(User user){
-//        // 1분 후에 계정 잠금 상태를 해제하는 타이머 설정
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                failedStack.remove(user.getEmail());
-//                user.resetStack();
-//                userRepository.save(user);
-//            }
-//        }, 60 * 1000); // 5분 후에 실행
-//    }
 }

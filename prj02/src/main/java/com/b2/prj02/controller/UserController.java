@@ -1,7 +1,5 @@
 package com.b2.prj02.controller;
 
-import com.b2.prj02.Exception.NotFoundException;
-import com.b2.prj02.dto.CheckUserEmailRequestDTO;
 import com.b2.prj02.dto.UserDeleteRequestDTO;
 import com.b2.prj02.dto.UserLoginRequestDTO;
 import com.b2.prj02.dto.UserSignupRequestDTO;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -37,13 +34,6 @@ public class UserController {
     public ResponseEntity<?> userSignup(@RequestPart("user") UserSignupRequestDTO user){
         return userService.signup(user);
     }
-    @Transactional
-    @PostMapping(value = "/signupimage")
-    public ResponseEntity<?> userSignupImage(@RequestPart("user") UserSignupRequestDTO user,
-                                            @RequestPart("file") MultipartFile file) throws IOException {
-        String url = userService.saveImage(file);
-        return userService.signup(user, url);
-    }
 
     @Transactional
     @PostMapping(value = "/signup/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -55,9 +45,17 @@ public class UserController {
     }
 
     @PostMapping("/signup/dupEmail")
-    public Boolean checkEmail(@RequestBody CheckUserEmailRequestDTO user){
-        return userRepository.findByEmail(user.getEmail()).isEmpty();
+    public Boolean checkEmail(@RequestBody String email){
+        return userService.checkEmail(email);
     }
+
+//    @Transactional
+//    @PostMapping(value = "/signupimage")
+//    public ResponseEntity<?> userSignupImage(@RequestPart("user") UserSignupRequestDTO user,
+//                                             @RequestPart("file") MultipartFile file) throws IOException {
+//        String url = userService.saveImage(file);
+//        return userService.signup(user, url);
+//    }
 
 
 
