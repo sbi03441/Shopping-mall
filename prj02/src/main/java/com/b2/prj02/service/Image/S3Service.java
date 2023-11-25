@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
+import java.util.UUID;
 
 
 @Service
@@ -30,7 +33,7 @@ public class S3Service {
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
-    //    3. AWS S3에 접근하기 위한 클라이언트를 생성합니다
+//    3. AWS S3에 접근하기 위한 클라이언트를 생성합니다
     private S3Client buildS3Client() {
         return S3Client.builder()
                 .region(Region.of(region))
@@ -38,17 +41,22 @@ public class S3Service {
                 .build();
     }
 
-    public String uploadFileAndGetUrl(Path filePath) {
+    private String generateUniqueKey(String originalFilename) {
+        // 고유한 키 생성 로직 (예: UUID 사용)
+        return UUID.randomUUID().toString() + "_" + originalFilename;
+    }
+
+    public String uploadFileAndGetUrl(MultipartFile file) throws IOException {
 //            3. AWS S3에 접근하기 위한 클라이언트를 생성합니다
         S3Client s3Client = buildS3Client();
 //            4. S3에 업로드할 때 사용할 객체 키 생성 - localFilePath.getFileName()을 사용하여 로컬 파일 경로의 파일 이름을 가져와서 "uploads/"와 결합하여 객체 키를 생성합니다.
-        String objectKey = "C:\\Project\\BackEnd\\prj02" + filePath.getFileName();
+        String objectKey = generateUniqueKey(file.getOriginalFilename());
 
 //            5. S3에 파일 업로드 - 업로드할 버킷과 객체 키를 지정합니다.
         s3Client.putObject(PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(objectKey)
-                .build(), filePath); //로컬 파일을 업로드
+                .build(), RequestBody.fromBytes(file.getBytes())); //로컬 파일을 업로드
 
 //            6. 파일 업로드 완료 후 URL 생성 - 생성된 URL은 업로드된 파일에 접근할 수 있는 주소입니다.
 //            builder -> builder.bucket(bucketName).key(objectKey).build()를 사용하여 버킷과 객체 키를 지정합니다.

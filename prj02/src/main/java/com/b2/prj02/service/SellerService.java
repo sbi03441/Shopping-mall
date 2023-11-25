@@ -3,6 +3,7 @@ package com.b2.prj02.service;
 import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.dto.request.ProductCreateRequestDTO;
 import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
+import com.b2.prj02.dto.response.SellerProductResponseDTO;
 import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
@@ -47,7 +48,6 @@ public class SellerService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("SELLER 권한이 없습니다.");
         }
         ProductEntity productEntity = CreateProductEntity(productCreateRequestDTO, user);
-        productEntity.setUserId(user);
 
         ProductEntity savedProduct = productRepository.save(productEntity);
 
@@ -57,15 +57,11 @@ public class SellerService {
 
     @Transactional
     // 판매 물품 조회
-    public List<ProductCreateRequestDTO> getActiveProducts(Long userId, String userEmail) {
-        LocalDate currentDate = LocalDate.now();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
-
-        List<ProductEntity> activeProducts = productRepository.findByUserIdAndSaleEndDateBefore(userId, currentDate);
+    public List<SellerProductResponseDTO> getActiveProducts(User user) {
+        List<ProductEntity> activeProducts = productRepository.findByUserIdAndSaleEndDateAfter(user, LocalDate.now());
 
         return activeProducts.stream()
-                .map(this::createProductDTOFromEntity)
+                .map(this::createSellerProductDTOFromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -92,19 +88,15 @@ public class SellerService {
     }
 
     // 판매 종료된 물품 조회
-    public List<ProductCreateRequestDTO> getSoldProducts(Long userId, String userEmail) {
-        LocalDate currentDate = LocalDate.now();
-
-        userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
-
-        List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateAfter(userId, currentDate);
+    public List<SellerProductResponseDTO> getSoldProducts(User user) {
+        List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateBefore(user, LocalDate.now());
 
         return soldProducts.stream()
-                .map(this::createProductDTOFromEntity)
+                .map(this::createSellerProductDTOFromEntity)
                 .collect(Collectors.toList());
     }
 
+    LocalDate now = LocalDate.now();
     // ProductEntity 생성
     private ProductEntity CreateProductEntity(ProductCreateRequestDTO productCreateRequestDTO, User user) {
         CategoryEntity category = categoryRepository.findByCategory(productCreateRequestDTO.getCategory())
@@ -115,7 +107,7 @@ public class SellerService {
                 .productName(productCreateRequestDTO.getProductName())
                 .price(productCreateRequestDTO.getPrice())
                 .productQuantity(productCreateRequestDTO.getProductQuantity())
-                .registerDate(productCreateRequestDTO.getRegisterDate())
+                .registerDate(now)
                 .saleEndDate(productCreateRequestDTO.getSaleEndDate())
                 .productDetail(productCreateRequestDTO.getProductDetail())
                 .img1(productCreateRequestDTO.getImg1())
@@ -126,9 +118,10 @@ public class SellerService {
                 .build();
     }
     // Entity to DTO 변환
-    private ProductCreateRequestDTO createProductDTOFromEntity(ProductEntity productEntity) {
-        return ProductCreateRequestDTO.builder()
-                .category(productEntity.getCategory() != null ? productEntity.getCategory().getCategory() : null)
+    private SellerProductResponseDTO createSellerProductDTOFromEntity(ProductEntity productEntity) {
+        return SellerProductResponseDTO.builder()
+                .productId(productEntity.getProductId())
+                .category(productEntity.getCategory().getCategory())
                 .productName(productEntity.getProductName())
                 .price(productEntity.getPrice())
                 .productQuantity(productEntity.getProductQuantity())
@@ -141,5 +134,4 @@ public class SellerService {
                 .option(productEntity.getOption())
                 .build();
     }
-
 }
