@@ -47,7 +47,6 @@ public class SellerService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("SELLER 권한이 없습니다.");
         }
         ProductEntity productEntity = CreateProductEntity(productCreateRequestDTO, user);
-        productEntity.setUserId(user);
 
         ProductEntity savedProduct = productRepository.save(productEntity);
 
@@ -57,16 +56,12 @@ public class SellerService {
 
     @Transactional
     // 판매 물품 조회
-    public List<ProductCreateRequestDTO> getActiveProducts(Long userId, String userEmail) {
-        LocalDate currentDate = LocalDate.now();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
+    public List<ProductCreateRequestDTO> getActiveProducts(User user) {
+        List<ProductEntity> activeProducts = productRepository.findByUserIdAndSaleEndDateAfter(user, LocalDate.now());
 
-        List<ProductEntity> activeProducts = productRepository.findByUserIdAndSaleEndDateBefore(userId, currentDate);
-       return activeProducts.stream()
+        return activeProducts.stream()
                 .map(this::createProductDTOFromEntity)
                 .collect(Collectors.toList());
-
     }
 
     // 재고 수정
@@ -92,33 +87,27 @@ public class SellerService {
     }
 
     // 판매 종료된 물품 조회
-    public List<ProductCreateRequestDTO> getSoldProducts(Long userId, String userEmail) {
-        LocalDate currentDate = LocalDate.now();
-
-        userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
-
-        List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateAfter(userId, currentDate);
+    public List<ProductCreateRequestDTO> getSoldProducts(User user) {
+        List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateBefore(user, LocalDate.now());
 
         return soldProducts.stream()
                 .map(this::createProductDTOFromEntity)
                 .collect(Collectors.toList());
-
-        return soldProductDTOs;
     }
 
+    LocalDate now = LocalDate.now();
     // ProductEntity 생성
     private ProductEntity CreateProductEntity(ProductCreateRequestDTO productCreateRequestDTO, User user) {
         CategoryEntity category = categoryRepository.findByCategory(productCreateRequestDTO.getCategory())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리입니다."));
-        
+
         return ProductEntity.builder()
                 .category(category)
                 .productName(productCreateRequestDTO.getProductName())
                 .price(productCreateRequestDTO.getPrice())
                 .productQuantity(productCreateRequestDTO.getProductQuantity())
-                .registerDate(productCreateRequestDTO.getRegisterDate())
-                .saleEndDate(productCreateRequestDTO.getSaleEndDate())
+                .registerDate(now)
+                .saleEndDate(now)
                 .productDetail(productCreateRequestDTO.getProductDetail())
                 .img1(productCreateRequestDTO.getImg1())
                 .img2(productCreateRequestDTO.getImg2())
