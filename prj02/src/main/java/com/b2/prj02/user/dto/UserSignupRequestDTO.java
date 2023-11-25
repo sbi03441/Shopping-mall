@@ -1,7 +1,7 @@
-package com.b2.prj02.dto.request;
+package com.b2.prj02.user.dto;
 
 
-import com.b2.prj02.role.UserStatus;
+import com.b2.prj02.user.role.UserRole;
 import lombok.*;
 
 @Getter @Setter
@@ -14,6 +14,6 @@ public class UserSignupRequestDTO {
     private String password;
     private String address;
     private String gender;
-    private String status;
+    private UserRole userRole;
     private String filePath;
 }

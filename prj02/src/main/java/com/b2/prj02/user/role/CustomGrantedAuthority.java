@@ -1,15 +1,14 @@
-package com.b2.prj02.role;
+package com.b2.prj02.user.role;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 public class CustomGrantedAuthority implements GrantedAuthority {
 
     private final String role;
 
-    public CustomGrantedAuthority(UserStatus userStatus) {
+    public CustomGrantedAuthority(UserRole userRole) {
         // 여기에서 사용자 상태에 따라 권한을 할당
-        this.role = "ROLE_" + userStatus.name();
+        this.role = "ROLE_" + userRole.name();
     }
 
     @Override

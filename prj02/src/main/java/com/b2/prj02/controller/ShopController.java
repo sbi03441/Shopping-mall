@@ -1,6 +1,6 @@
 package com.b2.prj02.controller;
 
-import com.b2.prj02.repository.UserRepository;
+import com.b2.prj02.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

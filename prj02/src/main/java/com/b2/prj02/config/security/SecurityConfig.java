@@ -1,7 +1,8 @@
 package com.b2.prj02.config.security;
 
 import com.b2.prj02.config.CorsConfig;
-import com.b2.prj02.service.jwt.JwtTokenProvider;
+import com.b2.prj02.config.security.jwt.JwtAuthenticationFilter;
+import com.b2.prj02.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/logout", "/api/user/delete").access("hasAnyRole('USER', 'SELLER') and not hasRole('DELETED')")
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/shop/**").hasAnyRole("USER", "SELLER")
                 .antMatchers("/api/product/**").hasRole("SELLER")

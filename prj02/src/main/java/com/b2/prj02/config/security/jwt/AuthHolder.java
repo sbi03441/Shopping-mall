@@ -1,4 +1,4 @@
-package com.b2.prj02.service.jwt;
+package com.b2.prj02.config.security.jwt;
 
 public class AuthHolder {
     private static final ThreadLocal<String> profileEmailHolder = new ThreadLocal<>();

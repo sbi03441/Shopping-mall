@@ -1,7 +1,7 @@
-package com.b2.prj02.service.jwt;
+package com.b2.prj02.config.security.jwt;
 
-import com.b2.prj02.entity.User;
-import com.b2.prj02.role.UserStatus;
+import com.b2.prj02.user.entity.User;
+import com.b2.prj02.user.role.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +37,10 @@ public class JwtTokenProvider {
 
 //     JWT 토큰 생성 (이메일)
 
-    public String createToken(User loginUser, UserStatus status) {
+    public String createToken(User loginUser) {
         Claims claims = Jwts.claims().setSubject(loginUser.getEmail());
         claims.put("id", loginUser.getUserId());
-        claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
+        claims.put("role", loginUser.getUserRole()); // 정보는 key/value 쌍으로 저장됩니다.
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -50,19 +49,6 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
                 .compact();
     }
-
-    // JWT 토큰 생성 (user_idx)
-//    public String createToken(Long user_idx, UserStatus status) {
-//        Claims claims = Jwts.claims().setSubject(String.valueOf(user_idx));
-//        claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
-//        Date now = new Date();
-//        return Jwts.builder()
-//                .setClaims(claims) // 정보 저장
-//                .setIssuedAt(now) // 토큰 발행 시간
-//                .setExpiration(new Date(now.getTime() + tokenValidTime)) // 토큰 유효 시간
-//                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
-//                .compact();
-//    }
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
@@ -108,7 +94,7 @@ public class JwtTokenProvider {
         return claims.isEmpty() ? null : claims.get("id", String.class);
     }
 
-    public String findStatusBytoken(String token) {
+    public String findRoleBytoken(String token) {
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         // "userId" 클레임의 값을 얻기

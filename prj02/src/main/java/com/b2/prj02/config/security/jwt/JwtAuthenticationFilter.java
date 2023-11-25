@@ -1,7 +1,7 @@
-package com.b2.prj02.config.security;
+package com.b2.prj02.config.security.jwt;
 
-import com.b2.prj02.service.jwt.AuthHolder;
-import com.b2.prj02.service.jwt.JwtTokenProvider;
+import com.b2.prj02.config.security.jwt.AuthHolder;
+import com.b2.prj02.config.security.jwt.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

@@ -1,12 +1,11 @@
-package com.b2.prj02.controller;
+package com.b2.prj02.user.controller;
 
-import com.b2.prj02.dto.request.UserDeleteRequestDTO;
-import com.b2.prj02.dto.request.UserLoginRequestDTO;
-import com.b2.prj02.dto.request.UserSignupRequestDTO;
-import com.b2.prj02.entity.User;
-import com.b2.prj02.repository.UserRepository;
-import com.b2.prj02.service.User.UserService;
-import com.b2.prj02.service.jwt.TokenBlacklist;
+import com.b2.prj02.user.dto.UserDeleteRequestDTO;
+import com.b2.prj02.user.dto.UserLoginRequestDTO;
+import com.b2.prj02.user.dto.UserSignupRequestDTO;
+import com.b2.prj02.user.entity.User;
+import com.b2.prj02.user.repository.UserRepository;
+import com.b2.prj02.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Set;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,16 +30,8 @@ public class UserController {
     @Transactional
     @PostMapping(value = "/signup")
     public ResponseEntity<?> userSignup(@RequestBody UserSignupRequestDTO user){
-        return userService.signup(user);
-    }
-
-    @Transactional
-    @PostMapping(value = "/signup/image/token",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> saveImageToToken(@RequestHeader("X-AUTH-TOKEN") String token,
-                                       @RequestParam("file") MultipartFile file) throws IOException {
-        User user = userService.checkUser(token);
-        String url = userService.saveImageToToken(file, user);
-        return ResponseEntity.status(200).body(url);
+        User newUser = userService.signup(user);
+        return ResponseEntity.status(200).body(newUser);
     }
 
     @Transactional
@@ -52,7 +43,17 @@ public class UserController {
 
     @PostMapping("/signup/dupEmail")
     public Boolean checkEmail(@RequestBody String email){
-        return userService.checkEmail(email);
+        return userService.checkUser(email);
+    }
+
+
+    @Transactional
+    @PostMapping(value = "/signup/image/token",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveImageToToken(@RequestHeader("X-AUTH-TOKEN") String token,
+                                              @RequestParam("file") MultipartFile file) throws IOException {
+        User user = userService.checkToken(token);
+        String url = userService.saveImageToToken(file, user);
+        return ResponseEntity.status(200).body(url);
     }
 
 
@@ -66,7 +67,8 @@ public class UserController {
 //4-2. Refresh Token이 있다면 해당 Refresh Token의 Claims로 Access토큰 재발급
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody UserLoginRequestDTO user){
-        return userService.login(user);
+        Map<String, String> response = userService.login(user);
+        return ResponseEntity.status(200).body(response);
     }
 
 //***** 로그아웃 *****
@@ -75,14 +77,10 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> userLogout(@RequestHeader("X-AUTH-TOKEN") String token){
-        return userService.logout(token);
+        userService.logout(token);
+        return ResponseEntity.status(200).body("로그아웃이 성공적으로 완료되었습니다.");
     }
 
-
-    @GetMapping("/blacklist")
-    public Set<String> getBlackList(){
-        return TokenBlacklist.getBlacklist();
-    }
 
 //***** 회원 탈퇴 *****
 
@@ -93,7 +91,8 @@ public class UserController {
     @PutMapping("/delete")
     public ResponseEntity<?> userDelete(@RequestHeader("X-AUTH-TOKEN") String token,
                                         @RequestBody UserDeleteRequestDTO deleteUser){
-        return userService.deleteUser(token, deleteUser);
+        User deletedUser = userService.deleteUser(token, deleteUser);
+        return ResponseEntity.status(200).body(deletedUser);
     }
 }
 

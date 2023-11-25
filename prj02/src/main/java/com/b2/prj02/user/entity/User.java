@@ -1,8 +1,9 @@
-package com.b2.prj02.entity;
+package com.b2.prj02.user.entity;
 
 import com.b2.prj02.entity.product.ProductEntity;
-import com.b2.prj02.role.CustomGrantedAuthority;
-import com.b2.prj02.role.UserStatus;
+import com.b2.prj02.user.role.CustomGrantedAuthority;
+import com.b2.prj02.user.role.UserActiveStatus;
+import com.b2.prj02.user.role.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,13 +11,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -41,9 +39,6 @@ public class User implements UserDetails {
     private String fileName;
     private String filePath;
 
-//    @Column(name = "phone_number")
-//    private String phoneNumber;
-
     private String address;
     private String gender;
 
@@ -54,13 +49,16 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL)
     private List<ProductEntity> productList;
 
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private UserRole userRole;
 
+    @Column(name = "user_active_status")
+    @Enumerated(EnumType.STRING)
+    private UserActiveStatus userActiveStatus;
 
-    public User updateStatus(UserStatus newStatus) {
-        this.status = newStatus;
-        return this;
+    public void deleteUser() {
+        this.userActiveStatus = UserActiveStatus.DELETED;
     }
 
     private Integer stack;
@@ -79,9 +77,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return Collections.singletonList(new CustomGrantedAuthority(this.status));
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new CustomGrantedAuthority(status));
+        authorities.add(new CustomGrantedAuthority(userRole));
 
         // 판매자 여부에 따라 추가 권한 부여
         if (isSeller()) {
@@ -118,7 +115,7 @@ public class User implements UserDetails {
 
 
     public boolean isSeller() {
-        return status == UserStatus.SELLER;
+        return userRole == UserRole.SELLER;
     }
 
 

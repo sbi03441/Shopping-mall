@@ -11,11 +11,12 @@ CREATE TABLE `user` (
 	`nick_name` varchar(20) NOT NULL, #닉네임
 	`file_name` varchar(100), #이미지 파일 이름
 	`file_path` LONGTEXT, #이미지 파일 경로
-	`address` varchar(100) CHARACTER SET utf8mb4,
-	`gender` varchar(100) CHARACTER SET utf8mb4,
+	`address` varchar(100) CHARACTER SET utf8mb4 ,
+	`gender` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
 	`pay_money` INTEGER,
-	`stack` INTEGER NOT NULL DEFAULT  0,
-    `status` varchar(20)
+	`user_active_status` varchar(100) NOT NULL,
+	`stack` INTEGER DEFAULT  0 NOT NULL,
+    `user_role` varchar(100) NOT NULL
 );
 
 CREATE TABLE `category` (

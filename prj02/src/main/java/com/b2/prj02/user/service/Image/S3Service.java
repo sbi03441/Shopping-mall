@@ -1,4 +1,4 @@
-package com.b2.prj02.service.Image;
+package com.b2.prj02.user.service.Image;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

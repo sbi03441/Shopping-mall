@@ -2,7 +2,7 @@ package com.b2.prj02.entity.product;
 
 import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.entity.CategoryEntity;
-import com.b2.prj02.entity.User;
+import com.b2.prj02.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

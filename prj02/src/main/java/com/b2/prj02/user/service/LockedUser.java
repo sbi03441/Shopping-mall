@@ -1,16 +1,11 @@
-package com.b2.prj02.service.User;
+package com.b2.prj02.user.service;
 
-import com.b2.prj02.entity.User;
-import com.b2.prj02.repository.UserRepository;
+import com.b2.prj02.user.entity.User;
+import com.b2.prj02.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

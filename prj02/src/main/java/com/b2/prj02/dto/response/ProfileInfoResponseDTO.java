@@ -1,7 +1,7 @@
 package com.b2.prj02.dto.response;
 
-import com.b2.prj02.entity.User;
-import com.b2.prj02.role.UserStatus;
+import com.b2.prj02.user.entity.User;
+import com.b2.prj02.user.role.UserRole;
 import lombok.*;
 
 @Getter
@@ -17,7 +17,7 @@ public class ProfileInfoResponseDTO {
     private String address;
     private String gender;
     private Integer payMoney;
-    private UserStatus status;
+    private UserRole status;
 
     public static ProfileInfoResponseDTO from(User user){
         return ProfileInfoResponseDTO.builder()
@@ -26,7 +26,7 @@ public class ProfileInfoResponseDTO {
                 .address(user.getAddress())
                 .gender(user.getGender())
                 .payMoney(user.getPayMoney())
-                .status(user.getStatus())
+                .status(user.getUserRole())
                 .build();
     }
 }

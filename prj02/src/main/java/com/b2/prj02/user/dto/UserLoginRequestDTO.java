@@ -1,6 +1,5 @@
-package com.b2.prj02.dto.request;
+package com.b2.prj02.user.dto;
 
-import com.b2.prj02.role.UserStatus;
 import lombok.*;
 
 

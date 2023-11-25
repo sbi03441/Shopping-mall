@@ -3,16 +3,15 @@ package com.b2.prj02.service;
 import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.dto.request.ProductCreateRequestDTO;
 import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
-import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.product.ProductEntity;
-import com.b2.prj02.entity.User;
+import com.b2.prj02.user.entity.User;
 
 import com.b2.prj02.repository.CategoryRepository;
 
 import com.b2.prj02.repository.product.ProductRepository;
-import com.b2.prj02.repository.UserRepository;
-import com.b2.prj02.role.UserStatus;
-import com.b2.prj02.service.jwt.JwtTokenProvider;
+import com.b2.prj02.user.repository.UserRepository;
+import com.b2.prj02.config.security.jwt.JwtTokenProvider;
+import com.b2.prj02.user.role.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +19,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +42,7 @@ public class SellerService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new AccessDeniedException("사용자를 찾을 수 없습니다."));
 
-        if (user.getStatus() != UserStatus.SELLER) {
+        if (user.getUserRole() != UserRole.SELLER) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("SELLER 권한이 없습니다.");
         }
         ProductEntity productEntity = CreateProductEntity(productCreateRequestDTO, user);
