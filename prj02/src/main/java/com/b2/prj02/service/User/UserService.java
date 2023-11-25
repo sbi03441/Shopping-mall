@@ -13,7 +13,6 @@ import com.b2.prj02.service.jwt.JwtTokenProvider;
 import com.b2.prj02.service.jwt.TokenBlacklist;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -73,41 +67,6 @@ public class UserService {
     }
 
 
-    public ResponseEntity<?> signup(UserSignupRequestDTO user, MultipartFile file) throws IOException {
-        String url = saveImage(file);
-        if (checkEmail(user.getEmail())) {
-            User newUser = User.builder()
-                    .email(user.getEmail())
-                    .password(passwordEncoder.encode(user.getPassword()))
-                    .address(user.getAddress())
-                    .gender(user.getGender())
-                    .nickName(user.getNickName())
-                    .stack(0)
-                    .filePath(url)
-                    .build();
-
-            String status = user.getStatus();
-
-            switch (status) {
-                case "USER":
-                    newUser.updateStatus(UserStatus.USER);
-                    userRepository.save(newUser);
-                    return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
-
-                case "SELLER":
-                    newUser.updateStatus(UserStatus.SELLER);
-                    userRepository.save(newUser);
-                    return ResponseEntity.status(200).body(newUser.getNickName() + " 님 회원 가입을 축하드립니다.");
-
-                default:
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("없는 Status입니다.");
-            }
-        }
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 가입된 정보입니다.");
-
-    }
-
     public ResponseEntity<?> login(UserLoginRequestDTO user) {
         Optional<User> loginUser = userRepository.findByEmail(user.getEmail());
 
@@ -126,7 +85,8 @@ public class UserService {
 
         loginUser.get().resetStack();
         userRepository.save(loginUser.get());
-        String newToken = jwtTokenProvider.createToken(user.getEmail(), loginUser.get().getStatus());
+
+        String newToken = jwtTokenProvider.createToken(loginUser.get(), loginUser.get().getStatus());
 
         if (jwtTokenProvider.findStatusBytoken(newToken).equals("DELETED")) {
 
@@ -140,7 +100,6 @@ public class UserService {
         response.put("email", loginUser.get().getEmail());
         response.put("address", loginUser.get().getAddress());
         response.put("staus", loginUser.get().getStatus().name());
-
         response.put("nick_name", loginUser.get().getNickName());
         response.put("file_path", loginUser.get().getFilePath());
 
@@ -176,31 +135,16 @@ public class UserService {
         } else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이메일 또는 비밀번호가 틀렸습니다.");
     }
 
+    public String saveImage(MultipartFile file) throws IOException {
+        return s3Service.uploadFileAndGetUrl(file);
+    }
 
-    public String saveImage(MultipartFile file, User user) throws IOException {
-//        1. 로컬에 저장할 파일 경로를 생성합니다.
-        Path filePath = Paths.get("C:\\Project\\BackEnd\\prj02").resolve(Objects.requireNonNull(file.getOriginalFilename()));
-
-
-//        2. multipartFile의 입력 스트림을 읽어와서 로컬 파일 경로에 저장합니다.
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        String url = s3Service.uploadFileAndGetUrl(filePath);
-
+    public String saveImageToToken(MultipartFile file, User user) throws IOException {
+        String url = s3Service.uploadFileAndGetUrl(file);
         user.setFilePath(url);
         userRepository.save(user);
 
         return url;
-    }
-
-    public String saveImage(MultipartFile file) throws IOException {
-//        1. 로컬에 저장할 파일 경로를 생성합니다.
-        Path filePath = Paths.get("C:\\Project\\BackEnd\\prj02").resolve(Objects.requireNonNull(file.getOriginalFilename()));
-
-//        2. multipartFile의 입력 스트림을 읽어와서 로컬 파일 경로에 저장합니다.
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        return s3Service.uploadFileAndGetUrl(filePath);
     }
 
     public User checkUser(String token) {

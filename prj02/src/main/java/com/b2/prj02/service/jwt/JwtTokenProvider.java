@@ -38,18 +38,6 @@ public class JwtTokenProvider {
 
 //     JWT 토큰 생성 (이메일)
 
-//    public String createToken(String email, UserStatus status) {
-//        Claims claims = Jwts.claims().setSubject(email);
-//        claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
-//        Date now = new Date();
-//        return Jwts.builder()
-//                .setClaims(claims) // 정보 저장
-//                .setIssuedAt(now) // 토큰 발행 시간
-//                .setExpiration(new Date(now.getTime() + tokenValidTime)) // 토큰 유효 시간
-//                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
-//                .compact();
-//    }
-
     public String createToken(User loginUser, UserStatus status) {
         Claims claims = Jwts.claims().setSubject(loginUser.getEmail());
         claims.put("id", loginUser.getUserId());
@@ -113,11 +101,11 @@ public class JwtTokenProvider {
         return claims.isEmpty() ? null : claims.get("sub", String.class);
     }
 
-    public Long findUserIdBytoken(String token) {
+    public String findUserIdBytoken(String token) {
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         // "userId" 클레임의 값을 얻기
-        return claims.isEmpty() ? null : claims.get("id", Long.class);
+        return claims.isEmpty() ? null : claims.get("id", String.class);
     }
 
     public String findStatusBytoken(String token) {

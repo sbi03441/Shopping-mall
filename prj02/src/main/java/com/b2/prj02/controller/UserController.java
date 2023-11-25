@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<?> saveImageToToken(@RequestHeader("X-AUTH-TOKEN") String token,
                                        @RequestParam("file") MultipartFile file) throws IOException {
         User user = userService.checkUser(token);
-        String url = userService.saveImage(file, user);
+        String url = userService.saveImageToToken(file, user);
         return ResponseEntity.status(200).body(url);
     }
 
@@ -53,13 +53,6 @@ public class UserController {
     @PostMapping("/signup/dupEmail")
     public Boolean checkEmail(@RequestBody String email){
         return userService.checkEmail(email);
-    }
-
-    @Transactional
-    @PostMapping(value = "/signup-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> userSignupImage(@RequestPart(value = "user") UserSignupRequestDTO user,
-                                             @RequestPart(value = "file") MultipartFile file) throws IOException {
-        return userService.signup(user, file);
     }
 
 

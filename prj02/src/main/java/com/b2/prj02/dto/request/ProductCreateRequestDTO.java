@@ -5,12 +5,14 @@ import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class ProductCreateRequestDTO {
 
     private Long category;
@@ -25,6 +27,8 @@ public class ProductCreateRequestDTO {
     private String img3;
     private List<String> option;
     @SuppressWarnings("unused")  // Lombok이 생성하는 생성자를 사용하기 위해 경고 억제
+
+    LocalDate now = LocalDate.now();
     public ProductCreateRequestDTO() {
     }
     public ProductCreateRequestDTO(Long category, String productName, double price, int productQuantity,
@@ -34,8 +38,8 @@ public class ProductCreateRequestDTO {
         this.productName = productName;
         this.price = price;
         this.productQuantity = productQuantity;
-        this.registerDate = registerDate;
-        this.saleEndDate = saleEndDate;
+        this.registerDate = now;
+        this.saleEndDate = now;
         this.productDetail = productDetail;
         this.img1 = img1;
         this.img2 = img2;
