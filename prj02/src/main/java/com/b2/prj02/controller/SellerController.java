@@ -61,21 +61,21 @@ public class SellerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
-    @PutMapping("/{productId}/quantity")
-    public ResponseEntity<?> updateProductQuantity(@PathVariable Long productId,
-                                                        @RequestBody SellerUpdateQuantityRequestDTO sellerUpdateQuantityRequestDTO,
-                                                        @RequestHeader("X-AUTH-TOKEN") String token) {
-        try {
-            String userEmail = jwtTokenProvider.getUserEmail(token);
-            sellerUpdateQuantityRequestDTO.setProductId(productId);
-            ProductDTO updatedProduct = sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail);
-            return ResponseEntity.ok("물품 재고가 성공적으로 수정되었습니다. 업데이트된 물품 ID: " + updatedProduct.getProductId());
-        } catch (IllegalArgumentException e) {
-            return handleIllegalArgumentException(e);
-        } catch (Exception e) {
-            return handleInternalServerError(e);
-        }
-    }
+//    @PutMapping("/{productId}/quantity")
+//    public ResponseEntity<?> updateProductQuantity(@PathVariable Long productId,
+//                                                        @RequestBody SellerUpdateQuantityRequestDTO sellerUpdateQuantityRequestDTO,
+//                                                        @RequestHeader("X-AUTH-TOKEN") String token) {
+//        try {
+//            String userEmail = jwtTokenProvider.getUserEmail(token);
+//            sellerUpdateQuantityRequestDTO.setProductId(productId);
+//            ProductDTO updatedProduct = sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail);
+//            return ResponseEntity.ok("물품 재고가 성공적으로 수정되었습니다. 업데이트된 물품 ID: " + updatedProduct.getProductId());
+//        } catch (IllegalArgumentException e) {
+//            return handleIllegalArgumentException(e);
+//        } catch (Exception e) {
+//            return handleInternalServerError(e);
+//        }
+//    }
 //    @GetMapping("/{userId}/sold")
 //    public ResponseEntity<?> getSoldProducts(@PathVariable Long userId,
 //                                             @RequestHeader("X-AUTH-TOKEN") String token) {

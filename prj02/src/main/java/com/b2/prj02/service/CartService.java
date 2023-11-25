@@ -49,7 +49,7 @@ public class CartService {
     }
 
 
-    // 이메일 기준으로 유저 가져오기
+    // 아이디 기준으로 유저 가져오기
     private User getUser(Long userId) {
         return profileRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
     }

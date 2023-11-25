@@ -76,32 +76,32 @@ public class SellerService {
     }
 
     // 재고 수정
-    public ProductDTO updateProductQuantity(SellerUpdateQuantityRequestDTO sellerUpdateQuantityRequestDTO, String userEmail) {
-        ProductEntity productEntity = productRepository.findById(sellerUpdateQuantityRequestDTO.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("물품을 찾을 수 없습니다."));
-
-        if (!productEntity.getUserId().getEmail().equals(userEmail)) {
-            throw new AccessDeniedException("해당 물품의 판매자가 아닙니다.");
-        }
-
-        int updatedQuantity = sellerUpdateQuantityRequestDTO.getProductQuantity();
-        if (updatedQuantity < 0) {
-            throw new IllegalArgumentException("재고는 음수가 될 수 없습니다.");
-        }
-
-        productEntity.setImg1(sellerUpdateQuantityRequestDTO.getImg1());
-        productEntity.setImg2(sellerUpdateQuantityRequestDTO.getImg2());
-        productEntity.setImg3(sellerUpdateQuantityRequestDTO.getImg3());
-
-
-        productEntity.setProductName(sellerUpdateQuantityRequestDTO.getProductName());
-        productEntity.setPrice(sellerUpdateQuantityRequestDTO.getPrice());
-        productEntity.setProductQuantity(updatedQuantity);
-        productEntity.setOption(sellerUpdateQuantityRequestDTO.getOption());
-
-        return productEntity.toDto();
-
-    }
+//    public ProductDTO updateProductQuantity(SellerUpdateQuantityRequestDTO sellerUpdateQuantityRequestDTO, String userEmail) {
+//        ProductEntity productEntity = productRepository.findById(sellerUpdateQuantityRequestDTO.getProductId())
+//                .orElseThrow(() -> new IllegalArgumentException("물품을 찾을 수 없습니다."));
+//
+//        if (!productEntity.getUserId().getEmail().equals(userEmail)) {
+//            throw new AccessDeniedException("해당 물품의 판매자가 아닙니다.");
+//        }
+//
+//        int updatedQuantity = sellerUpdateQuantityRequestDTO.getProductQuantity();
+//        if (updatedQuantity < 0) {
+//            throw new IllegalArgumentException("재고는 음수가 될 수 없습니다.");
+//        }
+//
+//        productEntity.setImg1(sellerUpdateQuantityRequestDTO.getImg1());
+//        productEntity.setImg2(sellerUpdateQuantityRequestDTO.getImg2());
+//        productEntity.setImg3(sellerUpdateQuantityRequestDTO.getImg3());
+//
+//
+//        productEntity.setProductName(sellerUpdateQuantityRequestDTO.getProductName());
+//        productEntity.setPrice(sellerUpdateQuantityRequestDTO.getPrice());
+//        productEntity.setProductQuantity(updatedQuantity);
+//        productEntity.setOption(sellerUpdateQuantityRequestDTO.getOption());
+//
+//        return productEntity.toDto();
+//
+//    }
 
     // 판매 종료된 물품 조회
     public List<ProductCreateRequestDTO> getSoldProducts(Long userId, String userEmail) {

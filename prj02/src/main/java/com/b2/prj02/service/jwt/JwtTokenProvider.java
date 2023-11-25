@@ -101,11 +101,11 @@ public class JwtTokenProvider {
         return claims.isEmpty() ? null : claims.get("sub", String.class);
     }
 
-    public String findUserIdBytoken(String token) {
+    public Long findUserIdBytoken(String token) {
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         // "userId" 클레임의 값을 얻기
-        return claims.isEmpty() ? null : claims.get("id", String.class);
+        return claims.isEmpty() ? null : claims.get("id", Long.class);
     }
 
     public String findStatusBytoken(String token) {
