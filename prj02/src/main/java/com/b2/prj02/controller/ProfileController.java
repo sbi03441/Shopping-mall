@@ -3,7 +3,7 @@ package com.b2.prj02.controller;
 
 import com.b2.prj02.dto.response.ProfileInfoResponseDTO;
 
-import com.b2.prj02.dto.response.ShoppingCartListResponseDTO;
+
 import com.b2.prj02.service.ProfileService;
 import com.b2.prj02.service.jwt.TokenContext;
 import lombok.RequiredArgsConstructor;
