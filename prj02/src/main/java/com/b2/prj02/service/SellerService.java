@@ -20,7 +20,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,6 @@ public class SellerService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("SELLER 권한이 없습니다.");
         }
         ProductEntity productEntity = CreateProductEntity(productCreateRequestDTO, user);
-        productEntity.setUserId(user);
 
         ProductEntity savedProduct = productRepository.save(productEntity);
 
@@ -120,6 +121,7 @@ public class SellerService {
         return soldProductDTOs;
     }
 
+    LocalDate now = LocalDate.now();
     // ProductEntity 생성
     private ProductEntity CreateProductEntity(ProductCreateRequestDTO productCreateRequestDTO, User user) {
         return ProductEntity.builder()
@@ -127,8 +129,8 @@ public class SellerService {
                 .productName(productCreateRequestDTO.getProductName())
                 .price(productCreateRequestDTO.getPrice())
                 .productQuantity(productCreateRequestDTO.getProductQuantity())
-                .registerDate(productCreateRequestDTO.getRegisterDate())
-                .saleEndDate(productCreateRequestDTO.getSaleEndDate())
+                .registerDate(now)
+                .saleEndDate(now)
                 .productDetail(productCreateRequestDTO.getProductDetail())
                 .img1(productCreateRequestDTO.getImg1())
                 .img2(productCreateRequestDTO.getImg2())
