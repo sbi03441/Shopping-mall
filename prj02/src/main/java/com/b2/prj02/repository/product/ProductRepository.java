@@ -4,12 +4,10 @@ import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 

@@ -1,6 +1,7 @@
 package com.b2.prj02.role;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 public class CustomGrantedAuthority implements GrantedAuthority {
 

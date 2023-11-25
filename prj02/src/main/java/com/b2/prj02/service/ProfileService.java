@@ -15,7 +15,7 @@ import java.util.List;
 public class ProfileService {
     private final ProfileRepository profileRepository;
 
-    //    public ProfileInfoResponseDTO findProfileInfoByProfileIdx(Long profileIdx) {
+//    public ProfileInfoResponseDTO findProfileInfoByProfileIdx(Long profileIdx) {
 //        User user = profileRepository.findByUserId(profileIdx).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
 //        return ProfileInfoResponseDTO.from(user);
 //    }
@@ -33,13 +33,9 @@ public class ProfileService {
     }
 
 
-
-
     // 이메일 기준으로 유저 가져오기
     private User getUser(String email){
         return profileRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("없는 정보 입니다."));
     }
-
-
 
 }

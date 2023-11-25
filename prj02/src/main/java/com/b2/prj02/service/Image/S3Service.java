@@ -3,6 +3,7 @@ package com.b2.prj02.service.Image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -11,6 +12,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.net.URL;
 import java.nio.file.Path;
+
 
 @Service
 @RequiredArgsConstructor
