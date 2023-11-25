@@ -44,8 +44,10 @@ public class SellerController {
             return handleInternalServerError(e);
         }
     }
+
     @GetMapping("/active")
     public ResponseEntity<?> getActiveProducts(@RequestHeader("X-AUTH-TOKEN") String token) {
+
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
             User user = userRepository.findByEmail(userEmail)
@@ -81,6 +83,7 @@ public class SellerController {
             User user = userRepository.findByEmail(userEmail)
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
             List<SellerProductResponseDTO> soldProducts = sellerService.getSoldProducts(user);
+
 
             return ResponseEntity.ok(soldProducts);
         } catch (Exception e) {
