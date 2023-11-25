@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/shop")
-@CrossOrigin(origins = "*")
 public class ShopController {
     private final UserRepository userRepository;
 

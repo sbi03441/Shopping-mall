@@ -96,4 +96,3 @@ public class UserController {
         return userService.deleteUser(token, deleteUser);
     }
 }
-
