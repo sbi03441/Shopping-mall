@@ -1,5 +1,6 @@
 package com.b2.prj02.service.jwt;
 
+import com.b2.prj02.entity.User;
 import com.b2.prj02.role.UserStatus;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -37,8 +37,9 @@ public class JwtTokenProvider {
 
 //     JWT 토큰 생성 (이메일)
 
-    public String createToken(String email, UserStatus status) {
-        Claims claims = Jwts.claims().setSubject(email);
+    public String createToken(User loginUser, UserStatus status) {
+        Claims claims = Jwts.claims().setSubject(loginUser.getEmail());
+        claims.put("id", loginUser.getUserId());
         claims.put("role", status); // 정보는 key/value 쌍으로 저장됩니다.
         Date now = new Date();
         return Jwts.builder()
@@ -98,6 +99,14 @@ public class JwtTokenProvider {
         // "userId" 클레임의 값을 얻기
         return claims.isEmpty() ? null : claims.get("sub", String.class);
     }
+
+    public String findUserIdBytoken(String token) {
+        // JWT 토큰을 디코딩하여 페이로드를 얻기
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        // "userId" 클레임의 값을 얻기
+        return claims.isEmpty() ? null : claims.get("id", String.class);
+    }
+
     public String findStatusBytoken(String token) {
         // JWT 토큰을 디코딩하여 페이로드를 얻기
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();

@@ -28,7 +28,6 @@ public class ProductEntity {
     @JoinColumn(name = "category_idx")
     private CategoryEntity category;
 
-
     @ManyToOne
     @JoinColumn(name = "user_idx")
     private User userId;
@@ -103,4 +102,3 @@ public class ProductEntity {
 
 
 }
-

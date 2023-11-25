@@ -1,18 +1,14 @@
 package com.b2.prj02.controller;
 
-
 import com.b2.prj02.dto.response.ProfileInfoResponseDTO;
 import com.b2.prj02.dto.response.ShoppingCartListResponseDTO;
-
 import com.b2.prj02.service.ProfileService;
 import com.b2.prj02.service.jwt.AuthHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import java.util.List;
 
@@ -20,7 +16,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/mypage")
-//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class ProfileController {
 
     private final ProfileService profileService;

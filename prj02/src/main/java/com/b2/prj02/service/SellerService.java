@@ -3,6 +3,7 @@ package com.b2.prj02.service;
 import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.dto.request.ProductCreateRequestDTO;
 import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
+import com.b2.prj02.dto.response.SellerProductResponseDTO;
 import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
@@ -56,11 +57,11 @@ public class SellerService {
 
     @Transactional
     // 판매 물품 조회
-    public List<ProductCreateRequestDTO> getActiveProducts(User user) {
+    public List<SellerProductResponseDTO> getActiveProducts(User user) {
         List<ProductEntity> activeProducts = productRepository.findByUserIdAndSaleEndDateAfter(user, LocalDate.now());
 
         return activeProducts.stream()
-                .map(this::createProductDTOFromEntity)
+                .map(this::createSellerProductDTOFromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -87,11 +88,11 @@ public class SellerService {
     }
 
     // 판매 종료된 물품 조회
-    public List<ProductCreateRequestDTO> getSoldProducts(User user) {
+    public List<SellerProductResponseDTO> getSoldProducts(User user) {
         List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateBefore(user, LocalDate.now());
 
         return soldProducts.stream()
-                .map(this::createProductDTOFromEntity)
+                .map(this::createSellerProductDTOFromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -107,7 +108,7 @@ public class SellerService {
                 .price(productCreateRequestDTO.getPrice())
                 .productQuantity(productCreateRequestDTO.getProductQuantity())
                 .registerDate(now)
-                .saleEndDate(now)
+                .saleEndDate(productCreateRequestDTO.getSaleEndDate())
                 .productDetail(productCreateRequestDTO.getProductDetail())
                 .img1(productCreateRequestDTO.getImg1())
                 .img2(productCreateRequestDTO.getImg2())
@@ -117,9 +118,10 @@ public class SellerService {
                 .build();
     }
     // Entity to DTO 변환
-    private ProductCreateRequestDTO createProductDTOFromEntity(ProductEntity productEntity) {
-        return ProductCreateRequestDTO.builder()
-                .category(productEntity.getCategory() != null ? productEntity.getCategory().getCategory() : null)
+    private SellerProductResponseDTO createSellerProductDTOFromEntity(ProductEntity productEntity) {
+        return SellerProductResponseDTO.builder()
+                .productId(productEntity.getProductId())
+                .category(productEntity.getCategory().getCategory())
                 .productName(productEntity.getProductName())
                 .price(productEntity.getPrice())
                 .productQuantity(productEntity.getProductQuantity())
@@ -132,5 +134,4 @@ public class SellerService {
                 .option(productEntity.getOption())
                 .build();
     }
-
 }

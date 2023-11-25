@@ -1,20 +1,20 @@
-package com.b2.prj02.dto.request;
+package com.b2.prj02.dto.response;
 
-import com.b2.prj02.entity.CategoryEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class ProductCreateRequestDTO {
+public class SellerProductResponseDTO {
 
+    private Long productId;
     private Long category;
     private String productName;
     private double price;

@@ -3,6 +3,7 @@ package com.b2.prj02.controller;
 import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.dto.request.ProductCreateRequestDTO;
 import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
+import com.b2.prj02.dto.response.SellerProductResponseDTO;
 import com.b2.prj02.entity.User;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.service.SellerService;
@@ -43,14 +44,15 @@ public class SellerController {
             return handleInternalServerError(e);
         }
     }
-    @GetMapping("/{userId}/active")
-    public ResponseEntity<?> getActiveProducts(@PathVariable("userId") Long userId,
-                                               @RequestHeader("X-AUTH-TOKEN") String token) {
+
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveProducts(@RequestHeader("X-AUTH-TOKEN") String token) {
+
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
             User user = userRepository.findByEmail(userEmail)
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
-            List<ProductCreateRequestDTO> activeProducts = sellerService.getActiveProducts(user);
+            List<SellerProductResponseDTO> activeProducts = sellerService.getActiveProducts(user);
 
             return ResponseEntity.ok(activeProducts);
         } catch (AccessDeniedException e) {
@@ -61,13 +63,11 @@ public class SellerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
-    @PutMapping("/{productId}/quantity")
-    public ResponseEntity<?> updateProductQuantity(@PathVariable Long productId,
-                                                        @RequestBody SellerUpdateQuantityRequestDTO sellerUpdateQuantityRequestDTO,
-                                                        @RequestHeader("X-AUTH-TOKEN") String token) {
+    @PutMapping("/quantity")
+    public ResponseEntity<?> updateProductQuantity(@RequestBody SellerUpdateQuantityRequestDTO sellerUpdateQuantityRequestDTO,
+                                                   @RequestHeader("X-AUTH-TOKEN") String token) {
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
-            sellerUpdateQuantityRequestDTO.setProductId(productId);
             ProductDTO updatedProduct = sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail);
             return ResponseEntity.ok("물품 재고가 성공적으로 수정되었습니다. 업데이트된 물품 ID: " + updatedProduct.getProductId());
         } catch (IllegalArgumentException e) {
@@ -76,14 +76,14 @@ public class SellerController {
             return handleInternalServerError(e);
         }
     }
-    @GetMapping("/{userId}/sold")
-    public ResponseEntity<?> getSoldProducts(@PathVariable Long userId,
-                                             @RequestHeader("X-AUTH-TOKEN") String token) {
+    @GetMapping("/sold")
+    public ResponseEntity<?> getSoldProducts(@RequestHeader("X-AUTH-TOKEN") String token) {
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
             User user = userRepository.findByEmail(userEmail)
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
-            List<ProductCreateRequestDTO> soldProducts = sellerService.getSoldProducts(user);
+            List<SellerProductResponseDTO> soldProducts = sellerService.getSoldProducts(user);
+
 
             return ResponseEntity.ok(soldProducts);
         } catch (Exception e) {
