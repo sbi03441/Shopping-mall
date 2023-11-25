@@ -6,7 +6,9 @@ import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
 import com.b2.prj02.entity.CategoryEntity;
 import com.b2.prj02.entity.product.ProductEntity;
 import com.b2.prj02.entity.User;
+
 import com.b2.prj02.repository.CategoryRepository;
+
 import com.b2.prj02.repository.product.ProductRepository;
 import com.b2.prj02.repository.UserRepository;
 import com.b2.prj02.role.UserStatus;
