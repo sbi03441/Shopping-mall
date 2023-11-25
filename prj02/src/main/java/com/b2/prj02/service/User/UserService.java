@@ -85,7 +85,8 @@ public class UserService {
 
         loginUser.get().resetStack();
         userRepository.save(loginUser.get());
-        String newToken = jwtTokenProvider.createToken(user.getEmail(), loginUser.get().getStatus());
+
+        String newToken = jwtTokenProvider.createToken(loginUser.get(), loginUser.get().getStatus());
 
         if (jwtTokenProvider.findStatusBytoken(newToken).equals("DELETED")) {
 
