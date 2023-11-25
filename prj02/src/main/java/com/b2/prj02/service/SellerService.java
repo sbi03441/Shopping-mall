@@ -92,20 +92,20 @@ public class SellerService {
     }
 
     // 판매 종료된 물품 조회
-    public List<ProductCreateRequestDTO> getSoldProducts(Long userId, String userEmail) {
-        LocalDate currentDate = LocalDate.now();
-
-        userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
-
-        List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateAfter(userId, currentDate);
-
-        return soldProducts.stream()
-                .map(this::createProductDTOFromEntity)
-                .collect(Collectors.toList());
-
-        return soldProductDTOs;
-    }
+//    public List<ProductCreateRequestDTO> getSoldProducts(Long userId, String userEmail) {
+//        LocalDate currentDate = LocalDate.now();
+//
+//        userRepository.findByEmail(userEmail)
+//                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 이메일입니다."));
+//
+//        List<ProductEntity> soldProducts = productRepository.findByUserIdAndSaleEndDateAfter(userId, currentDate);
+//
+//        return soldProducts.stream()
+//                .map(this::createProductDTOFromEntity)
+//                .collect(Collectors.toList());
+//
+//        return soldProductDTOs;
+//    }
 
     // ProductEntity 생성
     private ProductEntity CreateProductEntity(ProductCreateRequestDTO productCreateRequestDTO, User user) {

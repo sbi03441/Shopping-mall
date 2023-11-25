@@ -17,13 +17,13 @@ public class ShoppingCartListResponseDTO {
     private Long totalPrice;
     private Long totalQuantity;
 
-    public static ShoppingCartListResponseDTO from(ShoppingCart shoppingCart){
-        return ShoppingCartListResponseDTO.builder()
-                .cartId(shoppingCart.getCartId())
-                .totalAmount(shoppingCart.getTotalAmount())
-                .totalPrice(shoppingCart.getTotalPrice())
-                .totalQuantity(shoppingCart.getTotalQuantity())
-                .build();
-    }
+//    public static ShoppingCartListResponseDTO from(ShoppingCart shoppingCart){
+//        return ShoppingCartListResponseDTO.builder()
+//                .cartId(shoppingCart.getCartId())
+//                .totalAmount(shoppingCart.getTotalAmount())
+//                .totalPrice(shoppingCart.getTotalPrice())
+//                .totalQuantity(shoppingCart.getTotalQuantity())
+//                .build();
+//    }
 
 }

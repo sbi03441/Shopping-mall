@@ -1,13 +1,12 @@
 package com.b2.prj02.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.b2.prj02.entity.product.ProductEntity;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,17 +20,16 @@ public class ShoppingCart {
     private Long cartId;
 
     @ManyToOne
-    @JoinColumn(name="user_idx")
+    @JoinColumn(name="user_id")
     private User userId;
 
-    @Column(name="total_amount")
-    private Long totalAmount;
+    @ManyToOne
+    @JoinColumn(name="product_id")
+    private ProductEntity productId;
 
-    @Column(name="total_price")
-    private Long totalPrice;
+    @Column(name = "amount")
+    private Long amount;
 
-    @Column(name="total_quantity")
-    private Long totalQuantity;
 
 
 }

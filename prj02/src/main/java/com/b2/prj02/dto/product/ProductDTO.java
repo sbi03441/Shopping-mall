@@ -62,6 +62,14 @@ public class ProductDTO {
                 .build();
     }
 
+    public static ProductDTO from(ProductEntity product){
+        return ProductDTO.builder()
+                .productId(product.getProductId())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .build();
+    }
+
 
 }
 

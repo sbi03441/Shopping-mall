@@ -24,17 +24,17 @@ public class ProfileController {
     // 유저 정보 조회
     @GetMapping("/info")
     public ResponseEntity<?> getUserProfile() {
-        String profileEmail = TokenContext.getProfileEmail();
-        ProfileInfoResponseDTO profileInfoResponse = profileService.findProfileInfoByProfileEmail(profileEmail);
+        Long profileId = TokenContext.getProfileId();
+        ProfileInfoResponseDTO profileInfoResponse = profileService.findProfileInfoByProfileEmail(profileId);
         return ResponseEntity.ok(profileInfoResponse);
     }
     // 장바구니 조회
     // TODO : 미완성
-    @GetMapping("/cart")
-    public ShoppingCartListResponseDTO getShoppingCart(){
-        String profileEmail = TokenContext.getProfileEmail();
-        return profileService.getShoppingCartList(profileEmail);
-    }
+//    @GetMapping("/cart")
+//    public ShoppingCartListResponseDTO getShoppingCart(){
+//        String profileEmail = TokenContext.getProfileEmail();
+//        return profileService.getShoppingCartList(profileEmail);
+//    }
 
     // 구매 내역 조회
 

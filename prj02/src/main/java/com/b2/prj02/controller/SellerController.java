@@ -76,23 +76,23 @@ public class SellerController {
             return handleInternalServerError(e);
         }
     }
-    @GetMapping("/{userId}/sold")
-    public ResponseEntity<?> getSoldProducts(@PathVariable Long userId,
-                                             @RequestHeader("X-AUTH-TOKEN") String token) {
-        try {
-            String userEmail = jwtTokenProvider.getUserEmail(token);
-
-            List<ProductCreateRequestDTO> soldProducts = sellerService.getSoldProducts(userId, userEmail);
-
-            if (soldProducts.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회된 물품이 없습니다.");
-            } else {
-                return ResponseEntity.ok(soldProducts);
-            }
-        } catch (Exception e) {
-            return handleInternalServerError(e);
-        }
-    }
+//    @GetMapping("/{userId}/sold")
+//    public ResponseEntity<?> getSoldProducts(@PathVariable Long userId,
+//                                             @RequestHeader("X-AUTH-TOKEN") String token) {
+//        try {
+//            String userEmail = jwtTokenProvider.getUserEmail(token);
+//
+//            List<ProductCreateRequestDTO> soldProducts = sellerService.getSoldProducts(userId, userEmail);
+//
+//            if (soldProducts.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회된 물품이 없습니다.");
+//            } else {
+//                return ResponseEntity.ok(soldProducts);
+//            }
+//        } catch (Exception e) {
+//            return handleInternalServerError(e);
+//        }
+//    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {

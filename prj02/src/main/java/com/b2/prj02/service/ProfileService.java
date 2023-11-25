@@ -21,21 +21,21 @@ public class ProfileService {
 //        return ProfileInfoResponseDTO.from(user);
 //    }
     // 유저 정보 조회
-    public ProfileInfoResponseDTO findProfileInfoByProfileEmail(String email) {
+    public ProfileInfoResponseDTO findProfileInfoByProfileEmail(Long id) {
 
-    User user = profileRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
+    User user = profileRepository.findById(id).orElseThrow(() -> new RuntimeException("없는 정보 입니다."));
     return ProfileInfoResponseDTO.from(user);
 }
 
     // 장바구니 조회
-    public ShoppingCartListResponseDTO getShoppingCartList(String profileEmail) {
-        User user = getUser(profileEmail);
-        ShoppingCart response= cartRepository.findByUserId(user).orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
-//        Long userId = user.getUserId();
-//        List<ShoppingCart> data = cartRepository.findAllById(Collections.singleton(userId));
-//        List<CartItemResponse> responses =
-        return ShoppingCartListResponseDTO.from(response);
-    }
+//    public ShoppingCartListResponseDTO getShoppingCartList(String profileEmail) {
+//        User user = getUser(profileEmail);
+//        ShoppingCart response= cartRepository.findByUserId(user).orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
+////        Long userId = user.getUserId();
+////        List<ShoppingCart> data = cartRepository.findAllById(Collections.singleton(userId));
+////        List<CartItemResponse> responses =
+//        return ShoppingCartListResponseDTO.from(response);
+//    }
 
 
 
