@@ -24,7 +24,7 @@ public class ProductEntity {
     @Column(name = "product_idx")
     private Long productId;
 
-    @ManyToOne    // (cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "category_idx")
     private CategoryEntity category;
 

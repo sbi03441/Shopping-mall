@@ -43,11 +43,4 @@ public class ProductCreateRequestDTO {
         this.option = option;
     }
 
-    public Timestamp convertRegisterDateToTimestamp() {
-        return Timestamp.valueOf(registerDate.atStartOfDay());
-    }
-
-    public Timestamp convertSaleEndDateToTimestamp() {
-        return Timestamp.valueOf(saleEndDate.atStartOfDay());
-    }
 }

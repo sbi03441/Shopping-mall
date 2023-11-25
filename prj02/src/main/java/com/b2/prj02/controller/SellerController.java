@@ -1,5 +1,6 @@
 package com.b2.prj02.controller;
 
+import com.b2.prj02.dto.product.ProductDTO;
 import com.b2.prj02.dto.request.ProductCreateRequestDTO;
 import com.b2.prj02.dto.request.SellerUpdateQuantityRequestDTO;
 import com.b2.prj02.entity.product.ProductEntity;
@@ -20,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
-//@CrossOrigin(origins = "http://localhost:8080",allowedHeaders = "*")
 public class SellerController {
 
     private final SellerService sellerService;
@@ -43,7 +43,7 @@ public class SellerController {
     }
     @GetMapping("/{userId}/active")
     public ResponseEntity<?> getActiveProducts(@PathVariable("userId") Long userId,
-                                                                           @RequestHeader("X-AUTH-TOKEN") String token) {
+                                               @RequestHeader("X-AUTH-TOKEN") String token) {
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
             List<ProductCreateRequestDTO> activeProducts = sellerService.getActiveProducts(userId, userEmail);
@@ -67,9 +67,8 @@ public class SellerController {
                                                         @RequestHeader("X-AUTH-TOKEN") String token) {
         try {
             String userEmail = jwtTokenProvider.getUserEmail(token);
-
             sellerUpdateQuantityRequestDTO.setProductId(productId);
-            ProductEntity updatedProduct = ProductEntity.fromDto(sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail));
+            ProductDTO updatedProduct = sellerService.updateProductQuantity(sellerUpdateQuantityRequestDTO, userEmail);
             return ResponseEntity.ok("물품 재고가 성공적으로 수정되었습니다. 업데이트된 물품 ID: " + updatedProduct.getProductId());
         } catch (IllegalArgumentException e) {
             return handleIllegalArgumentException(e);
@@ -88,7 +87,7 @@ public class SellerController {
             if (soldProducts.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("조회된 물품이 없습니다.");
             } else {
-                return ResponseEntity.ok(soldProducts.toString());
+                return ResponseEntity.ok(soldProducts);
             }
         } catch (Exception e) {
             return handleInternalServerError(e);
