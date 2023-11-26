@@ -56,11 +56,9 @@ public class UserController {
     public ResponseEntity<?> saveImageToToken(@RequestHeader("X-AUTH-TOKEN") String token,
                                               @RequestParam("file") MultipartFile file) throws IOException {
         User user = userService.checkToken(token);
-        String url = userService.saveImageToToken(file, user);
-        return ResponseEntity.status(200).body(url);
+        String imgUrl = userService.saveImageToToken(file, user);
+        return ResponseEntity.status(200).body(imgUrl);
     }
-
-
 
 //***** 로그인 *****
 
@@ -108,8 +106,8 @@ public class UserController {
     @PutMapping("/delete")
     public ResponseEntity<?> userDelete(@RequestHeader("X-AUTH-TOKEN") String token,
                                         @RequestBody UserDeleteRequestDTO deleteUser){
-        User deletedUser = userService.deleteUser(token, deleteUser);
-        return ResponseEntity.status(200).body(deletedUser);
+        userService.deleteUser(token, deleteUser);
+        return ResponseEntity.status(200).body("회원 탈퇴가 성공적으로 완료되었습니다.");
     }
 }
 
