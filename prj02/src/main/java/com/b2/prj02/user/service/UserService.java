@@ -1,8 +1,9 @@
 package com.b2.prj02.user.service;
 
-import com.b2.prj02.user.dto.UserDeleteRequestDTO;
-import com.b2.prj02.user.dto.UserLoginRequestDTO;
-import com.b2.prj02.user.dto.UserSignupRequestDTO;
+import com.b2.prj02.user.dto.request.UserDeleteRequestDTO;
+import com.b2.prj02.user.dto.request.UserLoginRequestDTO;
+import com.b2.prj02.user.dto.request.UserSignupRequestDTO;
+import com.b2.prj02.user.dto.response.UserLoginResponseDTO;
 import com.b2.prj02.user.entity.User;
 
 import com.b2.prj02.user.role.UserActiveStatus;
@@ -12,15 +13,14 @@ import com.b2.prj02.config.security.jwt.JwtTokenProvider;
 import com.b2.prj02.config.security.jwt.TokenBlacklist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
 
@@ -47,14 +47,15 @@ public class UserService {
                 .filePath(userData.getFilePath())
                 .userRole(userData.getUserRole())
                 .userActiveStatus(UserActiveStatus.ACTIVE)
+                .payMoney(0)
                 .stack(0)
                 .build();
     }
 
 
-    public  Map<String, String> login(UserLoginRequestDTO user) {
+    public  UserLoginResponseDTO login(UserLoginRequestDTO user) {
         User loginUser = userRepository.findByEmail(user.getEmail()).orElseThrow(
-                () -> new UsernameNotFoundException("이메일을 다시 확인해주세요.")
+                () -> new BadCredentialsException("이메일을 다시 확인해주세요.")
         );
 
         if(loginUser.getUserActiveStatus().equals(UserActiveStatus.DELETED)){
@@ -75,17 +76,15 @@ public class UserService {
 
         String newToken = jwtTokenProvider.createToken(loginUser);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(newToken);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("email", loginUser.getEmail());
-        response.put("address", loginUser.getAddress());
-        response.put("userRole", loginUser.getUserRole().name());
-        response.put("nick_name", loginUser.getNickName());
-        response.put("file_path", loginUser.getFilePath());
-
-        return response;
+        return UserLoginResponseDTO.builder()
+                .email(loginUser.getEmail())
+                .nickName(loginUser.getNickName())
+                .address(loginUser.getAddress())
+                .gender(loginUser.getGender())
+                .userRole(loginUser.getUserRole())
+                .filePath(loginUser.getFilePath())
+                .token(newToken)
+                .build();
     }
 
 
@@ -93,11 +92,10 @@ public class UserService {
         checkToken(token);
         TokenBlacklist.addToBlacklist(token);
     }
-
+    @Transactional
     public User deleteUser(String token, UserDeleteRequestDTO deleteUser) {
         User user = checkToken(token);
-
-        if (user.getEmail().equals(deleteUser.getEmail()) && passwordEncoder.matches(deleteUser.getPassword(), user.getPassword())) {
+        if (!user.getEmail().equals(deleteUser.getEmail()) && !passwordEncoder.matches(deleteUser.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("이메일과 비밀번호를 다시 확인해주세요.");
         }
         user.deleteUser();
@@ -117,16 +115,21 @@ public class UserService {
 
         return url;
     }
-
+    @Transactional
     public User checkToken(String token) {
         String email = jwtTokenProvider.findEmailBytoken(token);
-        return userRepository.findByEmail(email).orElseThrow(
-                () ->  new UsernameNotFoundException("로그인을 다시 해주세요.")
+        User user =  userRepository.findByEmail(email).orElseThrow(
+                () ->  new BadCredentialsException("로그인을 다시 해주세요.")
         );
+
+        if(TokenBlacklist.isBlacklisted(token))
+            throw new DisabledException("다시 로그인 해주세요.");
+
+        return user;
     }
 
     public Boolean checkUser(String email){
         Optional<User> user = userRepository.findByEmail(email);
-        return user.isEmpty() || user.get().getUserActiveStatus().equals(UserActiveStatus.DELETED);
+        return user.isEmpty();
     }
 }

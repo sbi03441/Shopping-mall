@@ -1,12 +1,14 @@
 package com.b2.prj02.user.controller;
 
-import com.b2.prj02.user.dto.UserDeleteRequestDTO;
-import com.b2.prj02.user.dto.UserLoginRequestDTO;
-import com.b2.prj02.user.dto.UserSignupRequestDTO;
+import com.b2.prj02.user.dto.request.UserDeleteRequestDTO;
+import com.b2.prj02.user.dto.request.UserLoginRequestDTO;
+import com.b2.prj02.user.dto.request.UserSignupRequestDTO;
+import com.b2.prj02.user.dto.response.UserLoginResponseDTO;
 import com.b2.prj02.user.entity.User;
 import com.b2.prj02.user.repository.UserRepository;
 import com.b2.prj02.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -31,6 +34,7 @@ public class UserController {
     @PostMapping(value = "/signup")
     public ResponseEntity<?> userSignup(@RequestBody UserSignupRequestDTO user){
         User newUser = userService.signup(user);
+        userRepository.save(newUser);
         return ResponseEntity.status(200).body(newUser);
     }
 
@@ -67,8 +71,20 @@ public class UserController {
 //4-2. Refresh Token이 있다면 해당 Refresh Token의 Claims로 Access토큰 재발급
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody UserLoginRequestDTO user){
-        Map<String, String> response = userService.login(user);
-        return ResponseEntity.status(200).body(response);
+        UserLoginResponseDTO loginUser = userService.login(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", loginUser.getEmail());
+        response.put("nick_name", loginUser.getNickName());
+        response.put("address", loginUser.getAddress());
+        response.put("userRole", loginUser.getUserRole().name());
+        response.put("gender", loginUser.getGender());
+        response.put("file_path", loginUser.getFilePath());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(loginUser.getToken());
+
+        return ResponseEntity.status(200).headers(headers).body(response);
     }
 
 //***** 로그아웃 *****
@@ -88,6 +104,7 @@ public class UserController {
 //2. 유저 일치 여부 확인 (DB에서 유저 확인 & Token의 sub와 유저 정보 매치)
 //3. 해당 유저 확인 시 status를 DELETED로 변경
 //4. 해당 유저의 Refresh Token과 Access Token을 blacklist에 추가
+    @Transactional
     @PutMapping("/delete")
     public ResponseEntity<?> userDelete(@RequestHeader("X-AUTH-TOKEN") String token,
                                         @RequestBody UserDeleteRequestDTO deleteUser){

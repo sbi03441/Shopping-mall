@@ -1,7 +1,6 @@
 package com.b2.prj02.config.security.jwt;
 
 import com.b2.prj02.user.entity.User;
-import com.b2.prj02.user.role.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -74,7 +73,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
 
-            return !TokenBlacklist.isBlacklisted(jwtToken) && !claims.getBody().getExpiration().before(new Date());
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
         }

@@ -1,4 +1,4 @@
-package com.b2.prj02.user.dto;
+package com.b2.prj02.user.dto.request;
 
 import lombok.*;
 

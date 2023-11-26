@@ -26,17 +26,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .cors().and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/**").permitAll()
-                .antMatchers("/api/shop/**").hasAnyRole("USER", "SELLER")
-                .antMatchers("/api/product/**").hasRole("SELLER")
-                .anyRequest().authenticated()
+                    .antMatchers("/api/user/login", "/api/user/signup", "/api/user/signup/image", "/error").permitAll()
+                    .antMatchers("/api/product/**").hasRole("SELLER")
+                    .anyRequest().authenticated()
                 .and()
                 .addFilter(corsConfig.corsFilter()) // ** CorsFilter 등록 **
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),

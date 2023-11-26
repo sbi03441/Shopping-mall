@@ -22,7 +22,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "`user`")
+@Table(name = "user")
 public class User implements UserDetails {
     @javax.persistence.Id
     @org.springframework.data.annotation.Id
@@ -36,7 +36,6 @@ public class User implements UserDetails {
     @Column(name = "nick_name")
     private String nickName;
 
-    private String fileName;
     private String filePath;
 
     private String address;
@@ -44,7 +43,6 @@ public class User implements UserDetails {
 
     @Column(name = "pay_money")
     private Integer payMoney;
-
 
     @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL)
     private List<ProductEntity> productList;
