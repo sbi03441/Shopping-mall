@@ -6,13 +6,20 @@ import com.b2.prj02.entity.product.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface CartRepository extends JpaRepository<ShoppingCart,Long> {
-    Optional<ShoppingCart> findByUserId(User user);
-
-    Optional<ShoppingCart> findByUserIdAndProductId(User user, ProductEntity productEntity);
 
 
+
+
+    List<ShoppingCart> findAllByUserIdAndIsDeletedIsFalseOrderByCreatedAtDesc(User user);
+
+    Optional<ShoppingCart> findByUserIdAndProductIdAndIsDeletedIsFalse(User user, ProductEntity productEntity);
+
+    List<ShoppingCart> findAllByUserIdAndIsDeletedIsFalseAndCartIdIsIn(User user, Collection<Long>shoppingCartId);
 }
