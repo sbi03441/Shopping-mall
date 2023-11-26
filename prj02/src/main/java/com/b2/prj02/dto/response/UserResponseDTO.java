@@ -1,6 +1,7 @@
 package com.b2.prj02.dto.response;
 
-import com.b2.prj02.entity.User;
+
+import com.b2.prj02.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

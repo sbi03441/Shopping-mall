@@ -1,6 +1,7 @@
 package com.b2.prj02.entity;
 
 import com.b2.prj02.entity.product.ProductEntity;
+import com.b2.prj02.user.entity.User;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

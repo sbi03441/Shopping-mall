@@ -1,8 +1,8 @@
 package com.b2.prj02.repository;
 
 import com.b2.prj02.entity.ShoppingCart;
-import com.b2.prj02.entity.User;
 import com.b2.prj02.entity.product.ProductEntity;
+import com.b2.prj02.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
