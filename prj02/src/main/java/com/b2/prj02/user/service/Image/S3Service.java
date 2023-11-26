@@ -76,11 +76,11 @@ public class S3Service {
 //    }
 //
     // URL에서 키(파일 경로 및 이름)를 추출하는 메서드
-    private String getObjectKeyFromUrl(String imageUrl) {
-        // 예: https://your-bucket-name.s3.amazonaws.com/uploads/filename.ext
-        String[] parts = imageUrl.split("/");
-        List<String> partList = Arrays.asList(parts);
-        return String.join("/", partList.subList(3, partList.size()));
-    }
+//    public String getObjectKeyFromUrl(String imageUrl) {
+//        // 예: https://your-bucket-name.s3.amazonaws.com/uploads/filename.ext
+//        String[] parts = imageUrl.split("/");
+//        List<String> partList = Arrays.asList(parts);
+//        return String.join("/", partList.subList(3, partList.size()));
+//    }
 }
 

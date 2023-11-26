@@ -1,16 +1,15 @@
 package com.b2.prj02.user.service;
 
+import com.b2.prj02.config.security.jwt.JwtTokenProvider;
+import com.b2.prj02.config.security.jwt.TokenBlacklist;
 import com.b2.prj02.user.dto.request.UserDeleteRequestDTO;
 import com.b2.prj02.user.dto.request.UserLoginRequestDTO;
 import com.b2.prj02.user.dto.request.UserSignupRequestDTO;
 import com.b2.prj02.user.dto.response.UserLoginResponseDTO;
 import com.b2.prj02.user.entity.User;
-
-import com.b2.prj02.user.role.UserActiveStatus;
 import com.b2.prj02.user.repository.UserRepository;
+import com.b2.prj02.user.role.UserActiveStatus;
 import com.b2.prj02.user.service.Image.S3Service;
-import com.b2.prj02.config.security.jwt.JwtTokenProvider;
-import com.b2.prj02.config.security.jwt.TokenBlacklist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,9 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.*;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,8 +90,8 @@ public class UserService {
         checkToken(token);
         TokenBlacklist.addToBlacklist(token);
     }
-    @Transactional
-    public User deleteUser(String token, UserDeleteRequestDTO deleteUser) {
+
+    public void deleteUser(String token, UserDeleteRequestDTO deleteUser) {
         User user = checkToken(token);
         if (!user.getEmail().equals(deleteUser.getEmail()) && !passwordEncoder.matches(deleteUser.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("이메일과 비밀번호를 다시 확인해주세요.");
@@ -101,7 +99,6 @@ public class UserService {
         user.deleteUser();
         TokenBlacklist.addToBlacklist(token);
         userRepository.save(user);
-        return user;
     }
 
     public String saveImage(MultipartFile file) throws IOException {
@@ -115,7 +112,8 @@ public class UserService {
 
         return url;
     }
-    @Transactional
+
+
     public User checkToken(String token) {
         String email = jwtTokenProvider.findEmailBytoken(token);
         User user =  userRepository.findByEmail(email).orElseThrow(
