@@ -110,4 +110,3 @@ public class UserController {
         return ResponseEntity.status(200).body("회원 탈퇴가 성공적으로 완료되었습니다.");
     }
 }
-

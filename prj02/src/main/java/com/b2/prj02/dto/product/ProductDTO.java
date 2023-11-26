@@ -11,9 +11,9 @@ import java.util.List;
 @Builder
 public class ProductDTO {
 
-    private final Long productId;
-    private final Long category;
-    private final Long userId;
+    private Long productId;
+    private Long category;
+    private Long userId;
     private String productName;
     private double price;
     private int productQuantity;
@@ -62,6 +62,24 @@ public class ProductDTO {
                 .build();
     }
 
+    public static ProductDTO from(ProductEntity product){
+        return ProductDTO.builder()
+                .productId(product.getProductId())
+                .category(product.getCategory().getCategory())
+                .userId(product.getUserId().getUserId())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .productQuantity(product.getProductQuantity())
+                .productDetail(product.getProductDetail())
+                .img1(product.getImg1())
+                .img2(product.getImg2())
+                .img3(product.getImg3())
+                .option(product.getOption())
+                .build();
+    }
+
+
+
+
 
 }
-

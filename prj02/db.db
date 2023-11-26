@@ -33,9 +33,9 @@ CREATE TABLE `product` (
 	`register_date` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP, #등록일
 	`sale_enddate` TIMESTAMP NOT NULL, #판매종료날짜
 	`product_detail` LONGTEXT, #상품 설명
-	`img1` VARCHAR(600), #이미지1
-	`img2` VARCHAR(600), #이미지2
-	`img3` VARCHAR(600), #이미지3
+	`img1` LONGTEXT, #이미지1
+	`img2` LONGTEXT, #이미지2
+	`img3` LONGTEXT, #이미지3
 	`option` VARCHAR(20), #옵션
     FOREIGN KEY (category_idx) REFERENCES `category`(category_idx)
 );
