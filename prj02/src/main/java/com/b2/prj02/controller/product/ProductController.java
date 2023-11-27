@@ -1,16 +1,21 @@
 package com.b2.prj02.controller.product;
 
+import com.b2.prj02.Exception.product.ProductNotFoundException;
 import com.b2.prj02.dto.product.ProductDTO;
-import com.b2.prj02.exception.product.ProductNotFoundException;
+import com.b2.prj02.dto.request.ProductListRequest;
+
+import com.b2.prj02.service.product.PaginationResponse;
+import com.b2.prj02.service.product.ProductListResponse;
 import com.b2.prj02.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Parameter;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+
+
 import java.util.List;
 
 
@@ -30,7 +35,7 @@ public class ProductController {
         productListRequest.setCategory(category);
         PaginationResponse<ProductListResponse> productListResponses = productService.getProductList(productListRequest, pageable);
 
-        return ResponseEntity.ok(productListResponse);
+        return ResponseEntity.ok(productListResponses);
         // TODO : 1. ProductListRequest 생성
         //        2. ProductListResponse 생성
         //        3. getProductList 메소드 완성

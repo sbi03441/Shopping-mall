@@ -1,8 +1,9 @@
 package com.b2.prj02.service.product;
 
 import com.b2.prj02.dto.product.ProductDTO;
+import com.b2.prj02.dto.request.ProductListRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 
 public interface ProductService {
     ProductDTO getProductById(Long productId);

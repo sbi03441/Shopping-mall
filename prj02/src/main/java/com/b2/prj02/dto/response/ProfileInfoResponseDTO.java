@@ -19,6 +19,7 @@ public class ProfileInfoResponseDTO {
     private String gender;
     private Integer payMoney;
     private UserRole status;
+    private String filePath;
 
     public static ProfileInfoResponseDTO from(User user){
         return ProfileInfoResponseDTO.builder()
@@ -29,6 +30,7 @@ public class ProfileInfoResponseDTO {
                 .gender(user.getGender())
                 .payMoney(user.getPayMoney())
                 .status(user.getUserRole())
+                .filePath(user.getFilePath())
                 .build();
     }
 }
