@@ -19,7 +19,7 @@ public class CartController {
 
     private final CartService cartService;
 
-    //장바구니에 상품 담기(수정도 같이..?)
+    //장바구니에 상품 담기(수정도 같이)
     @PostMapping()
     public ResponseEntity<ShoppingCartResponseDTO> addCart(@RequestBody CartItemRequestDTO cartItemRequest){
         Long userId = TokenContext.getProfileId();
