@@ -25,7 +25,7 @@ public class CartService {
     private final ProfileRepository profileRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    //장바구니 담기 (수정도 같이..?)
+    //장바구니 담기 (수정도 같이)
     @Transactional
     public ResponseEntity<ShoppingCartResponseDTO> addCart(Long userId, CartItemRequestDTO cartItemRequest) {
         User user = getUser(userId);
