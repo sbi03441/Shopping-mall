@@ -22,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final CorsConfig corsConfig;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -33,8 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/api/user/login", "/api/user/signup", "/api/user/signup/image", "/error").permitAll()
+                    .antMatchers("/api/user/**", "/error").permitAll()
                     .antMatchers("/api/product/**").hasRole("SELLER")
+                    .antMatchers("/api/cart/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .addFilter(corsConfig.corsFilter()) // ** CorsFilter 등록 **

@@ -13,20 +13,24 @@ public class ProfileInfoResponseDTO {
 
     private Long userId;
     private String email;
-    private String phoneNumber;
+    private String nickName;
+//    private String phoneNumber;
     private String address;
     private String gender;
     private Integer payMoney;
     private UserRole status;
+    private String filePath;
 
     public static ProfileInfoResponseDTO from(User user){
         return ProfileInfoResponseDTO.builder()
                 .userId(user.getUserId())
                 .email(user.getEmail())
+                .nickName(user.getNickName())
                 .address(user.getAddress())
                 .gender(user.getGender())
                 .payMoney(user.getPayMoney())
                 .status(user.getUserRole())
+                .filePath(user.getFilePath())
                 .build();
     }
 }

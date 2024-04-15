@@ -1,6 +1,9 @@
 package com.b2.prj02.config.security.jwt;
 
-import org.springframework.security.authentication.DisabledException;
+
+
+
+import com.b2.prj02.service.jwt.TokenContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,12 +26,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request); //Request의 헤더에서 토큰을 불러와서 저장
 
         if (token != null && jwtTokenProvider.validateToken(token)) { //토큰이 유효한지 검사
-            String email = jwtTokenProvider.getUserEmail(token);
+            Long userId = jwtTokenProvider.findUserIdBytoken(token);
             Authentication authentication = jwtTokenProvider.getAuthentication(token); //토큰안에 있는 유저정보를 authentication객체로 저장
 
             SecurityContextHolder.getContext().setAuthentication(authentication); //authentication객체로 저장한 유저정보를 SecurityContext에 저장
 
-            AuthHolder.setProfileEmail(email);
+            TokenContext.setProfileId(userId);
         }
 
 
