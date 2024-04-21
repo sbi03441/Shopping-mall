@@ -24,7 +24,8 @@
 
 # ERD
 
-<img src="https://file.notion.so/f/f/733d2ec5-944e-43ee-8a68-d090b5cd1a1a/0ac4a8c7-075b-449f-9275-0f95bbc41035/Untitled.png?id=74862cc2-1c86-4a70-90ca-a749b150a710&table=block&spaceId=733d2ec5-944e-43ee-8a68-d090b5cd1a1a&expirationTimestamp=1713312000000&signature=ZXz9ZY59bLo3XE1SZOk18uqbX1m4K27_Yg_5wmuJWvU&downloadName=Untitled.png"/>
+![erd_2](https://github.com/sbi03441/issue/assets/115928654/3a5d9280-2cbc-41b9-b665-cffe5a3dce8b)
+
 
 ## 🛠 기술 스택
 
